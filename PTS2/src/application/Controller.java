@@ -5,10 +5,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.beans.InvalidationListener;
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,9 +19,19 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 public class Controller implements Initializable{
 	String path;
+	
+	private boolean atEndOfMedia = false;
+	
+	String soundButtonpath = "C:\\Users\\Simon\\Desktop\\soundButton.png";
+	String playButtonpath = "C:\\Users\\Simon\\Desktop\\playButton.png";
+	String pauseButtonpath = "C:\\Users\\Simon\\Desktop\\pauseButton.png";
+	Image soundIcon = new Image(new File(soundButtonpath).toURI().toString());
+	Image playIcon = new Image(new File(playButtonpath).toURI().toString());
+	Image pauseIcon = new Image(new File(pauseButtonpath).toURI().toString());
 	
 	@FXML 
 	MediaView mediaView;
@@ -27,8 +39,14 @@ public class Controller implements Initializable{
 	MediaPlayer mediaPlayer;
 	
 	@FXML Button btn_play;
-	@FXML ImageView mp3_picture;
 	@FXML TextField area_filePath;
+	
+	@FXML ImageView mp3_picture;
+	@FXML ImageView soundButton;
+	@FXML ImageView playPauseButton;
+	
+	@FXML Slider time_slider;
+	@FXML Slider volume_slider;
 	
 	@FXML public void choosePath() throws MalformedURLException {
 		FileChooser fileChooser = new FileChooser();
@@ -45,8 +63,61 @@ public class Controller implements Initializable{
 		media = new Media(path);   
         mediaPlayer = new MediaPlayer(media);
         mediaView.setMediaPlayer(mediaPlayer);  
-        mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setAutoPlay(true);											// le média est lancé automatiquement
+        mediaPlayer.setVolume(0.25);
         System.out.println("Media lancé !");
+        playPauseButton.setDisable(false);
+        timeSliderUpdate();
+        volumeSliderUpdate();
+	}
+	
+	/*
+	@FXML public void seekOnSlider() {
+		Duration duration = mediaPlayer.getMedia().getDuration();
+		media_slider.valueProperty().addListener((obs -> {
+			mediaPlayer.seek(duration.multiply(media_slider.getValue() / 100.0));
+	    }));
+		
+		Duration duration = mediaPlayer.getMedia().getDuration();
+		mediaPlayer.seek(duration.multiply(media_slider.getValue() / 100.0));	// Calcule le rapport entre la valeur du slider et le temps correspondant dans le média
+		
+	}
+	*/
+	
+	@FXML public void timeSliderUpdate() {
+		mediaPlayer.setOnReady(new Runnable() {
+			
+			@Override
+			public void run() {
+				time_slider.setMax(mediaPlayer.getTotalDuration().toSeconds());
+			}
+		});
+		
+		// Listen to the slider. When it changes, seek with the player.
+		InvalidationListener sliderChangeListener = o-> {
+		    Duration seekTo = Duration.seconds(time_slider.getValue());
+		    mediaPlayer.seek(seekTo);
+		};
+		time_slider.valueProperty().addListener(sliderChangeListener);
+
+		// Link the player's time to the slider
+		mediaPlayer.currentTimeProperty().addListener(l-> {
+		    // Temporarily remove the listener on the slider, so it doesn't respond to the change in playback time
+			time_slider.valueProperty().removeListener(sliderChangeListener);
+
+		    // Keep timeText's text up to date with the slider position.
+		    Duration currentTime = mediaPlayer.getCurrentTime();
+		    time_slider.setValue(currentTime.toSeconds());    
+
+		    // Re-add the slider listener
+		    time_slider.valueProperty().addListener(sliderChangeListener);
+		});
+	}
+	
+	@FXML public void volumeSliderUpdate() {
+		volume_slider.valueProperty().addListener((o-> {
+			mediaPlayer.setVolume(volume_slider.getValue() / 100.0);					// Change le volume sonore selon la valeur du slider vertical
+	    }));
 	}
 	
 	@FXML public void printFilePath() {
@@ -68,24 +139,54 @@ public class Controller implements Initializable{
 		System.out.println("Modification Handle");
 		if(key.equals("image")) mp3_picture.setImage((Image) valueAdded);
 	}
+	
+	@FXML public void showVolumeSlider() {
+		if(volume_slider.isVisible()) {
+			volume_slider.setVisible(false);
+		}
+		else {
+			volume_slider.setVisible(true);
+		}
+	}
 
 	@FXML public void playBtn() {
-		if(mediaPlayer.getStatus() == Status.PAUSED) {
-        	mediaPlayer.play();
-        	btn_play.setText("Pause");
-        	System.out.println("PLAY");
-		}
-      	else{
-        	mediaPlayer.pause();
-        	btn_play.setText("Play");
-        	System.out.println("PAUSE");
-        }
-	} 
+			Status status = mediaPlayer.getStatus();
+		 
+			if (status == Status.UNKNOWN  || status == Status.HALTED)
+			{
+				// don't do anything in these states
+				return;
+			}
+ 
+        		if ( status == Status.PAUSED
+        				|| status == Status.READY
+        				|| status == Status.STOPPED)
+        		{
+        			// rewind the movie if we're sitting at the end
+        			if (atEndOfMedia) {
+            		mediaPlayer.seek(mediaPlayer.getStartTime());
+            		atEndOfMedia = false;
+        			}
+        			mediaPlayer.play();
+        			playPauseButton.setImage(pauseIcon);
+        			System.out.println("PLAY");
+         	 
+        		} 
+        		else {
+        			mediaPlayer.pause();
+        			playPauseButton.setImage(playIcon);
+                	System.out.println("PAUSE");
+        		}
+		} 
 
+	@FXML public void darkMode() {
+		
+	}
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
+		playPauseButton.setImage(pauseIcon);
+		soundButton.setImage(soundIcon);
 	}
 	
 }

@@ -54,7 +54,7 @@
       <Line endX="365.0" endY="0.5" layoutX="804.0" layoutY="391.0" startX="-135.0" />
       <Label layoutX="669.0" layoutY="415.0" text="Options" />
       <Label layoutX="669.0" layoutY="445.0" text="Caractère d'occultation" />
-      <Slider layoutX="781.0" layoutY="368.0" prefHeight="14.0" prefWidth="372.0" />
+      <Slider fx:id="time_slider" layoutX="712.0" layoutY="369.0" prefHeight="14.0" prefWidth="407.0" />
       <RadioButton layoutX="669.0" layoutY="475.0" mnemonicParsing="false" text="Mode entraînement" />
       <RadioButton layoutX="1047.0" layoutY="474.0" mnemonicParsing="false" text="Mode évaluation" />
       <CheckBox layoutX="669.0" layoutY="505.0" mnemonicParsing="false" text="Autoriser mot incomplet" />
@@ -62,10 +62,12 @@
       <RadioButton layoutX="705.0" layoutY="555.0" mnemonicParsing="false" text="3 lettres minimum" />
       <CheckBox layoutX="669.0" layoutY="580.0" mnemonicParsing="false" text="Autoriser l'affichage en temps réel du nombre de mots découverts" />
       <CheckBox layoutX="669.0" layoutY="610.0" mnemonicParsing="false" text="Autoriser l'affichage de la solution" />
-      <Line endX="365.0" endY="1.0" layoutX="804.0" layoutY="119.0" startX="-135.0" />
+      <Line endX="365.0" endY="1.0" layoutX="804.0" layoutY="119.0" onMouseClicked="#showVolumeSlider" startX="-135.0" />
       <MediaView fx:id="mediaView" fitHeight="240.0" fitWidth="500.0" layoutX="668.0" layoutY="120.0" />
-      <Button fx:id="btn_play" layoutX="678.0" layoutY="363.0" mnemonicParsing="false" onAction="#playBtn" prefHeight="25.0" prefWidth="69.0" text="Play" />
       <ImageView fx:id="mp3_picture" fitHeight="240.0" fitWidth="501.0" layoutX="669.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
       <TextField fx:id="area_filePath" layoutX="893.0" layoutY="70.0" prefHeight="25.0" prefWidth="277.0" />
+      <Slider fx:id="volume_slider" layoutX="1137.0" layoutY="260.0" orientation="VERTICAL" prefHeight="91.0" prefWidth="14.0" value="25.0" visible="false" />
+      <ImageView fx:id="soundButton" fitHeight="25.0" fitWidth="24.0" layoutX="1132.0" layoutY="363.0" onMouseClicked="#showVolumeSlider" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="playPauseButton" disable="true" fitHeight="25.0" fitWidth="24.0" layoutX="678.0" layoutY="363.0" onMouseClicked="#playBtn" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>
