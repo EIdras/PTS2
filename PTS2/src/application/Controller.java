@@ -6,17 +6,21 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.text.Text;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -26,9 +30,9 @@ public class Controller implements Initializable{
 	
 	private boolean atEndOfMedia = false;
 	
-	String soundButtonpath = "C:\\Users\\Simon\\Desktop\\soundButton.png";
-	String playButtonpath = "C:\\Users\\Simon\\Desktop\\playButton.png";
-	String pauseButtonpath = "C:\\Users\\Simon\\Desktop\\pauseButton.png";
+	String soundButtonpath = "./soundButton.png";
+	String playButtonpath = "./playButton.png";
+	String pauseButtonpath = "./pauseButton.png";
 	Image soundIcon = new Image(new File(soundButtonpath).toURI().toString());
 	Image playIcon = new Image(new File(playButtonpath).toURI().toString());
 	Image pauseIcon = new Image(new File(pauseButtonpath).toURI().toString());
@@ -40,6 +44,9 @@ public class Controller implements Initializable{
 	
 	@FXML Button btn_play;
 	@FXML TextField area_filePath;
+	@FXML TextField occultChar;
+	@FXML Text txt_wordCount;
+	@FXML TextArea field_transcription;
 	
 	@FXML ImageView mp3_picture;
 	@FXML ImageView soundButton;
@@ -48,12 +55,13 @@ public class Controller implements Initializable{
 	@FXML Slider time_slider;
 	@FXML Slider volume_slider;
 	
-	@FXML public void choosePath() throws MalformedURLException {
+	@FXML public void chooseMediaPath() throws MalformedURLException {
 		FileChooser fileChooser = new FileChooser();
 		File selectedFile = new File("");
 		selectedFile = fileChooser.showOpenDialog(null);
+		if (selectedFile == null) return;
 		path = selectedFile.toURI().toURL().toExternalForm();
-		System.out.println(path);
+		
 		launchMedia();
 		printFilePath();
 		if(path.contains(".mp3")) afficheImage();
@@ -63,6 +71,7 @@ public class Controller implements Initializable{
 		media = new Media(path);   
         mediaPlayer = new MediaPlayer(media);
         mediaView.setMediaPlayer(mediaPlayer);  
+        mediaView.autosize();
         mediaPlayer.setAutoPlay(true);											// le média est lancé automatiquement
         mediaPlayer.setVolume(0.25);
         System.out.println("Media lancé !");
@@ -71,6 +80,10 @@ public class Controller implements Initializable{
         volumeSliderUpdate();
 	}
 	
+	@FXML public void dispose() {
+		mediaPlayer.stop();
+		mediaPlayer.dispose();
+	}
 	/*
 	@FXML public void seekOnSlider() {
 		Duration duration = mediaPlayer.getMedia().getDuration();
@@ -136,7 +149,6 @@ public class Controller implements Initializable{
 	}
 	
 	protected void handleMetadata(String key, Object valueAdded) {
-		System.out.println("Modification Handle");
 		if(key.equals("image")) mp3_picture.setImage((Image) valueAdded);
 	}
 	
@@ -154,7 +166,6 @@ public class Controller implements Initializable{
 		 
 			if (status == Status.UNKNOWN  || status == Status.HALTED)
 			{
-				// don't do anything in these states
 				return;
 			}
  
@@ -168,14 +179,11 @@ public class Controller implements Initializable{
             		atEndOfMedia = false;
         			}
         			mediaPlayer.play();
-        			playPauseButton.setImage(pauseIcon);
-        			System.out.println("PLAY");
-         	 
+        			playPauseButton.setImage(pauseIcon);         	 
         		} 
         		else {
         			mediaPlayer.pause();
         			playPauseButton.setImage(playIcon);
-                	System.out.println("PAUSE");
         		}
 		} 
 
@@ -183,10 +191,32 @@ public class Controller implements Initializable{
 		
 	}
 	
+	@FXML public void wordCount() {
+		if ((field_transcription.getText() != null && !field_transcription.getText().isEmpty())) {
+			int value = field_transcription.getText().length();
+			txt_wordCount.setText(String.valueOf(value));
+		}
+		
+		
+	}
+	
+	public static void addTextLimiter(final TextField tf, final int maxLength) {
+	    tf.textProperty().addListener(new ChangeListener<String>() {
+	        @Override
+	        public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+	            if (tf.getText().length() > maxLength) {
+	                String s = tf.getText().substring(0, maxLength);
+	                tf.setText(s);
+	            }
+	        }
+	    });
+	}
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		playPauseButton.setImage(pauseIcon);
 		soundButton.setImage(soundIcon);
+		addTextLimiter(occultChar, 1);
 	}
 	
 }
