@@ -80,22 +80,11 @@ public class Controller implements Initializable{
         volumeSliderUpdate();
 	}
 	
-	@FXML public void dispose() {
+	@FXML public void dispose() { // Ne corrige pas le problème que l'on a lorseque l'on charge un média plusieurs fois, donc ne sert pour l'instant à rien
 		mediaPlayer.stop();
 		mediaPlayer.dispose();
 	}
-	/*
-	@FXML public void seekOnSlider() {
-		Duration duration = mediaPlayer.getMedia().getDuration();
-		media_slider.valueProperty().addListener((obs -> {
-			mediaPlayer.seek(duration.multiply(media_slider.getValue() / 100.0));
-	    }));
-		
-		Duration duration = mediaPlayer.getMedia().getDuration();
-		mediaPlayer.seek(duration.multiply(media_slider.getValue() / 100.0));	// Calcule le rapport entre la valeur du slider et le temps correspondant dans le média
-		
-	}
-	*/
+
 	
 	@FXML public void timeSliderUpdate() {
 		mediaPlayer.setOnReady(new Runnable() {
@@ -106,23 +95,23 @@ public class Controller implements Initializable{
 			}
 		});
 		
-		// Listen to the slider. When it changes, seek with the player.
+		// Ecoute sur le slider. Quand il est modifié, modifie le temps du media player.
 		InvalidationListener sliderChangeListener = o-> {
 		    Duration seekTo = Duration.seconds(time_slider.getValue());
 		    mediaPlayer.seek(seekTo);
 		};
 		time_slider.valueProperty().addListener(sliderChangeListener);
 
-		// Link the player's time to the slider
+		// Lie le temps du media player au slider
 		mediaPlayer.currentTimeProperty().addListener(l-> {
-		    // Temporarily remove the listener on the slider, so it doesn't respond to the change in playback time
+		    // Supression temporaire de l'écoute sur le slider, pour qu'il ne réponde pas aux changements du temps de lecture
 			time_slider.valueProperty().removeListener(sliderChangeListener);
 
-		    // Keep timeText's text up to date with the slider position.
+		    // Met a jour la valeur de temps du média avec la position du slider.
 		    Duration currentTime = mediaPlayer.getCurrentTime();
 		    time_slider.setValue(currentTime.toSeconds());    
 
-		    // Re-add the slider listener
+		    // Réactivation de l'écoute du slider
 		    time_slider.valueProperty().addListener(sliderChangeListener);
 		});
 	}
@@ -162,30 +151,44 @@ public class Controller implements Initializable{
 	}
 
 	@FXML public void playBtn() {
-			Status status = mediaPlayer.getStatus();
-		 
-			if (status == Status.UNKNOWN  || status == Status.HALTED)
-			{
-				return;
-			}
- 
-        		if ( status == Status.PAUSED
-        				|| status == Status.READY
-        				|| status == Status.STOPPED)
-        		{
-        			// rewind the movie if we're sitting at the end
-        			if (atEndOfMedia) {
-            		mediaPlayer.seek(mediaPlayer.getStartTime());
-            		atEndOfMedia = false;
-        			}
-        			mediaPlayer.play();
-        			playPauseButton.setImage(pauseIcon);         	 
-        		} 
-        		else {
-        			mediaPlayer.pause();
-        			playPauseButton.setImage(playIcon);
-        		}
-		} 
+		Status status = mediaPlayer.getStatus();
+		
+		Duration ct = mediaPlayer.getCurrentTime();
+		Duration td = mediaPlayer.getTotalDuration();
+		
+		if(ct.equals(td)) {
+			System.out.println("-----FIN MEDIA-----");
+			atEndOfMedia = true;
+		}
+	 
+		if (status == Status.UNKNOWN  || status == Status.HALTED)
+		{
+			// On ne fait rien dans ces états
+			return;
+		}
+
+    		if ( status == Status.PAUSED
+    				|| status == Status.READY
+    				|| status == Status.STOPPED)
+    		{
+    			// On relance le média si il est arrivé à sa fin
+    			if (atEndOfMedia) {
+        		mediaPlayer.seek(mediaPlayer.getStartTime());
+        		atEndOfMedia = false;
+    			}
+    			// Quand le media est en pause, un clic sur l'icone 'play' le met en play et change cet icone.
+    			mediaPlayer.play();
+    			playPauseButton.setImage(pauseIcon);
+    			System.out.println(status);
+     	 
+    		} 
+    		else {
+    			// Quand le media n'est pas en pause, un clic sur l'icone 'pause' le met en pause et change cet icone.
+    			mediaPlayer.pause();
+    			playPauseButton.setImage(playIcon);
+            	System.out.println(status);
+    		}
+	} 
 
 	@FXML public void darkMode() {
 		
