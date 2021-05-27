@@ -8,43 +8,35 @@ public class Hidden {
 
 	static String original = "I think the cat is there.";
 	static String hidden = "#";
-	static int words = 0; 
+	static int words = 0;
 	static int answers = 0;
-	static Set<String> previous;
+	static boolean block = false;
 	static Scanner scanner = new Scanner(System.in);
-	
-	public static void main(String[] args) {	
+
+	public static void main(String[] args) {
 		Set<String> revealed = new HashSet<>();
 		System.out.println(buildHint(revealed));
-		
-		for (final String w : original.split("\\s+")) {
-			words++;
-		}
-		
 		while (answers != words) {
 			String answer = scanner.next();
-			revealed.add(answer);
-			if (previous != revealed) {
-				answers++;
-			}
+			revealed.add(answer.toLowerCase());
 			System.out.println(buildHint(revealed));
-			previous = revealed;
 		}
 	}
-	
+
 	public static String cleanWord(String word) {
 		return word.replaceAll("[^A-Za-z]", "");
 	}
 
 	public static String buildHint(Set<String> revealed) {
 		final StringBuilder builder = new StringBuilder();
+		answers = 0;
 
 		// Iterate through each word of the original text
 		for (final String w : original.split("\\s+")) {
 			// remove any non-alphabetical characters
 			// and convert to lower case
 			final String clean = cleanWord(w).toLowerCase();
-			
+
 			// Add a space if there is already text in the output.
 			// This ensures that words do not hang on each other
 			if (builder.length() > 0) {
@@ -55,11 +47,16 @@ public class Hidden {
 			if (revealed.contains(clean)) {
 				// append original word
 				builder.append(w);
+				answers++;
 			} else {
 				// append '#' by replacing every alphabetical character to '#' using RegEx
 				builder.append(w.replaceAll("[A-Za-z]", hidden));
+				if (block == false) {
+					words++;
+				}
 			}
 		}
+		block = true;
 		return builder.toString();
 	}
 }
