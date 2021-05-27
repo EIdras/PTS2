@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class Hidden {
 
-	static String original = "I think the cat is there.";
+	static String original = "I think the cat is there. But, you are a nice guy! I am 80 years old? How are you; I am fine.";
 	static String hidden = "#";
 	static int words = 0;
 	static int answers = 0;
@@ -24,7 +24,7 @@ public class Hidden {
 	}
 
 	public static String cleanWord(String word) {
-		return word.replaceAll("[^A-Za-z]", "");
+		return word.replaceAll("[^A-Za-z0-9]", "");
 	}
 
 	public static String buildHint(Set<String> revealed) {
@@ -36,7 +36,7 @@ public class Hidden {
 			// remove any non-alphabetical characters
 			// and convert to lower case
 			final String clean = cleanWord(w).toLowerCase();
-
+			
 			// Add a space if there is already text in the output.
 			// This ensures that words do not hang on each other
 			if (builder.length() > 0) {
@@ -50,7 +50,7 @@ public class Hidden {
 				answers++;
 			} else {
 				// append '#' by replacing every alphabetical character to '#' using RegEx
-				builder.append(w.replaceAll("[A-Za-z]", hidden));
+				builder.append(w.replaceAll("[A-Za-z0-9]", hidden));
 				if (block == false) {
 					words++;
 				}
