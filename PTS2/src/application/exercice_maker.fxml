@@ -10,13 +10,14 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
    <children>
       <MenuBar prefHeight="13.0" prefWidth="1280.0">
         <menus>
@@ -57,13 +58,18 @@
       <Label layoutX="669.0" layoutY="455.0" text="Options" />
       <Label layoutX="669.0" layoutY="485.0" text="Caractère d'occultation" />
       <Slider fx:id="time_slider" layoutX="712.0" layoutY="410.0" prefHeight="14.0" prefWidth="407.0" />
-      <RadioButton layoutX="669.0" layoutY="515.0" mnemonicParsing="false" text="Mode entraînement" />
-      <RadioButton layoutX="1047.0" layoutY="514.0" mnemonicParsing="false" text="Mode évaluation" />
-      <CheckBox layoutX="669.0" layoutY="545.0" mnemonicParsing="false" text="Autoriser mot incomplet" />
-      <RadioButton layoutX="705.0" layoutY="570.0" mnemonicParsing="false" text="2 lettres minimum" />
-      <RadioButton layoutX="705.0" layoutY="595.0" mnemonicParsing="false" text="3 lettres minimum" />
-      <CheckBox layoutX="669.0" layoutY="620.0" mnemonicParsing="false" text="Autoriser l'affichage en temps réel du nombre de mots découverts" />
-      <CheckBox layoutX="669.0" layoutY="650.0" mnemonicParsing="false" text="Autoriser l'affichage de la solution" />
+      <RadioButton fx:id="trainningModeRadioButton" layoutX="669.0" layoutY="515.0" mnemonicParsing="false" onAction="#disabletEvaluationButtons" text="Mode entraînement">
+         <toggleGroup>
+            <ToggleGroup fx:id="modeGroup" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="evaluationModeRadioButton" layoutX="1047.0" layoutY="514.0" mnemonicParsing="false" onAction="#disableTrainningButtons" text="Mode évaluation" toggleGroup="$modeGroup" />
+      <RadioButton fx:id="twoLettersMinRadioButton" layoutX="705.0" layoutY="570.0" mnemonicParsing="false" text="2 lettres minimum">
+         <toggleGroup>
+            <ToggleGroup fx:id="lettersGroup" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="threeLettersMinRadioButton" layoutX="705.0" layoutY="595.0" mnemonicParsing="false" text="3 lettres minimum" toggleGroup="$lettersGroup" />
+      <CheckBox fx:id="enableDisplayNbWordFound" layoutX="669.0" layoutY="620.0" mnemonicParsing="false" text="Autoriser l'affichage en temps réel du nombre de mots découverts" />
+      <CheckBox fx:id="enableAnswerDisplay" layoutX="669.0" layoutY="650.0" mnemonicParsing="false" text="Autoriser l'affichage de la solution" />
       <Line endX="365.0" layoutX="804.0" layoutY="119.0" onMouseClicked="#showVolumeSlider" startX="-135.0" />
       <ImageView fx:id="mp3_picture" fitHeight="280.0" fitWidth="275.0" layoutX="782.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
       <MediaView fx:id="mediaView" fitHeight="280.0" fitWidth="500.0" layoutX="669.0" layoutY="120.0" />
@@ -73,5 +79,6 @@
       <ImageView fx:id="playPauseButton" disable="true" fitHeight="25.0" fitWidth="24.0" layoutX="678.0" layoutY="404.0" onMouseClicked="#playBtn" pickOnBounds="true" preserveRatio="true" />
       <Button layoutX="745.0" layoutY="38.0" mnemonicParsing="false" onAction="#dispose" text="Dispose" />
       <TextField fx:id="occultChar" layoutX="808.0" layoutY="481.0" prefHeight="25.0" prefWidth="25.0" promptText="#" />
+      <CheckBox fx:id="enableIncompleteWord" layoutX="669.0" layoutY="545.0" mnemonicParsing="false" text="Autoriser mot incomplet" />
    </children>
 </AnchorPane>
