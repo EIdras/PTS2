@@ -6,8 +6,8 @@ import java.util.Set;
 
 public class Hidden {
 
-	static String original = "I think the cat is there. But, you are a nice guy! I am 80 years old? How are you; I am fine.";
-	static String hidden = "#";
+	static String original = "I think the cat is H.E.R.E You'Re 99 a b c d e f g";
+	static String hiddenChar = "#";
 	static int words = 0;
 	static int answers = 0;
 	static boolean block = false;
@@ -18,6 +18,7 @@ public class Hidden {
 		System.out.println(buildHint(revealed));
 		while (answers != words) {
 			String answer = scanner.next();
+			answer = cleanWord(answer);
 			revealed.add(answer.toLowerCase());
 			System.out.println(buildHint(revealed));
 		}
@@ -33,10 +34,11 @@ public class Hidden {
 
 		// Iterate through each word of the original text
 		for (final String w : original.split("\\s+")) {
+
 			// remove any non-alphabetical characters
 			// and convert to lower case
 			final String clean = cleanWord(w).toLowerCase();
-			
+
 			// Add a space if there is already text in the output.
 			// This ensures that words do not hang on each other
 			if (builder.length() > 0) {
@@ -45,13 +47,15 @@ public class Hidden {
 
 			// Check if the clean word was already guessed
 			if (revealed.contains(clean)) {
+
 				// append original word
 				builder.append(w);
 				answers++;
 			} else {
+
 				// append '#' by replacing every alphabetical character to '#' using RegEx
-				builder.append(w.replaceAll("[A-Za-z0-9]", hidden));
-				if (block == false) {
+				builder.append(w.replaceAll("[A-Za-z0-9]", hiddenChar));
+				if (!block) {
 					words++;
 				}
 			}
