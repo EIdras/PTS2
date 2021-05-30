@@ -17,7 +17,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MakerController">
    <children>
       <MenuBar prefHeight="13.0" prefWidth="1280.0">
         <menus>
@@ -77,8 +77,8 @@
       <Slider fx:id="volume_slider" layoutX="1137.0" layoutY="260.0" orientation="VERTICAL" prefHeight="91.0" prefWidth="14.0" value="25.0" visible="false" />
       <ImageView fx:id="soundButton" fitHeight="25.0" fitWidth="24.0" layoutX="1132.0" layoutY="404.0" onMouseClicked="#showVolumeSlider" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="playPauseButton" disable="true" fitHeight="25.0" fitWidth="24.0" layoutX="678.0" layoutY="404.0" onMouseClicked="#playBtn" pickOnBounds="true" preserveRatio="true" />
-      <Button layoutX="745.0" layoutY="38.0" mnemonicParsing="false" onAction="#dispose" text="Dispose" />
       <TextField fx:id="occultChar" layoutX="808.0" layoutY="481.0" prefHeight="25.0" prefWidth="25.0" promptText="#" />
       <CheckBox fx:id="enableIncompleteWord" layoutX="669.0" layoutY="545.0" mnemonicParsing="false" text="Autoriser mot incomplet" />
+      <ImageView fx:id="iut_logo" fitHeight="75.0" fitWidth="200.0" layoutX="1066.0" layoutY="631.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>
