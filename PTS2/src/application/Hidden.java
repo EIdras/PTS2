@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class Hidden {
 
-	static String original = "I think the cat is H.E.R.E You'Re 99 a b c d e f g";
+	static String original = "I think the cat is there.You're 90 years old.";
 	static String hiddenChar = "#";
 	static int words = 0;
 	static int answers = 0;
