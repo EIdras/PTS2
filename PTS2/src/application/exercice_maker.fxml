@@ -46,9 +46,9 @@
       </MenuBar>
       <TextArea layoutX="41.0" layoutY="70.0" prefHeight="55.0" prefWidth="550.0" promptText="Ajoutez une consigne personnalisée à votre exercice" />
       <Label layoutX="41.0" layoutY="50.0" text="Consigne" />
-      <TextArea fx:id="area_transcription" layoutX="41.0" layoutY="167.0" onKeyPressed="#wordCount" prefHeight="392.0" prefWidth="550.0" wrapText="true" />
+      <TextArea fx:id="area_transcription" layoutX="41.0" layoutY="167.0" prefHeight="392.0" prefWidth="550.0" promptText="Collez ici le script du média lié à l'exercice. Cela correspond au texte que l'étudiant devra retrouver" wrapText="true" />
       <Label layoutX="41.0" layoutY="147.0" text="Transcription" />
-      <TextArea layoutX="41.0" layoutY="611.0" prefHeight="55.0" prefWidth="550.0" promptText="Complétez l'aide" />
+      <TextArea layoutX="41.0" layoutY="611.0" prefHeight="55.0" prefWidth="550.0" promptText="Complétez l'aide en indiquant à l'étudiant les informations dont il pourrait avoir besoin" />
       <Text fx:id="txt_wordCount" layoutX="549.0" layoutY="537.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0/0" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="34.0" />
       <Label layoutX="41.0" layoutY="591.0" text="Aide" />
       <Label layoutX="669.0" layoutY="50.0" text="Média" />

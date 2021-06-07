@@ -9,6 +9,7 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.MapChangeListener;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -19,6 +20,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -89,8 +91,10 @@ public class MakerController extends ParentController implements Initializable {
 		volumeSliderUpdate();
 	}
 
-	@FXML
 	public void timeSliderUpdate() {
+		// Remplacée par la méthode en dessous, car gérait mal la lecture d'un fichier après un autre
+		
+		/*
 		mediaPlayer.setOnReady(new Runnable() {
 
 			@Override
@@ -118,6 +122,38 @@ public class MakerController extends ParentController implements Initializable {
 
 			// Réactivation de l'écoute du slider
 			time_slider.valueProperty().addListener(sliderChangeListener);
+		});
+		
+		*/
+		
+		mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
+			@Override
+			public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
+				time_slider.setValue(newValue.toSeconds());
+			}
+		}
+				);
+
+		time_slider.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				mediaPlayer.seek(Duration.seconds(time_slider.getValue()));
+			}
+		});
+
+		time_slider.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				mediaPlayer.seek(Duration.seconds(time_slider.getValue()));
+			}
+		});
+
+		mediaPlayer.setOnReady(new Runnable() {
+			@Override
+			public void run() {
+				Duration total = media.getDuration();
+				time_slider.setMax(total.toSeconds());
+			}
 		});
 	}
 
@@ -179,10 +215,6 @@ public class MakerController extends ParentController implements Initializable {
 
 		if (status == Status.PAUSED || status == Status.READY || status == Status.STOPPED) {
 			// On relance le média si il est arrivé à sa fin
-			if (atEndOfMedia) {
-				mediaPlayer.seek(mediaPlayer.getStartTime());
-				atEndOfMedia = false;
-			}
 			// Quand le media est en pause, un clic sur l'icone 'play' le met en play et
 			// change cet icone.
 			mediaPlayer.play();
@@ -196,21 +228,20 @@ public class MakerController extends ParentController implements Initializable {
 			playPauseButton.setImage(playIcon);
 			System.out.println(status);
 		}
+		
+		if (atEndOfMedia) {
+			System.out.println("Retour au début...");
+			mediaPlayer.seek(mediaPlayer.getStartTime());
+			playPauseButton.setImage(pauseIcon);
+			atEndOfMedia = false;
+		}
 	}
 
 	@FXML
 	public void darkMode() {
-
+		// TODO : Mode sombre en chargeant un CSS, pas obligatoire donc pas prioritaire
 	}
 
-	@FXML
-	public void wordCount() {	// Ne fonctionne pas pour l'instant, génère simplement des erreurs :X
-		if ((field_transcription.getText() != null && !field_transcription.getText().isEmpty())) {
-			int value = field_transcription.getText().length();
-			txt_wordCount.setText(String.valueOf(value));
-		}
-
-	}
 
 	public static void addTextLimiter(final TextField tf, final int maxLength) {
 		tf.textProperty().addListener(new ChangeListener<String>() {
