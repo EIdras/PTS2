@@ -31,8 +31,8 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Paramètres">
             <items>
-              <MenuItem mnemonicParsing="false" text="Plein écran" />
-                  <MenuItem mnemonicParsing="false" text="Mode sombre" />
+              <MenuItem fx:id="darkMode_menuItem" mnemonicParsing="false" text="Plein écran" />
+                  <MenuItem mnemonicParsing="false" onAction="#darkMode" text="Mode sombre" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="A propos">

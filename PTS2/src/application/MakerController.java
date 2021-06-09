@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
@@ -12,8 +13,10 @@ import javafx.collections.MapChangeListener;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
@@ -51,6 +54,7 @@ public class MakerController extends ParentController implements Initializable {
 	@FXML Slider time_slider, volume_slider;
 	@FXML CheckBox enableIncompleteWord, enableDisplayNbWordFound, enableAnswerDisplay;
 	@FXML RadioButton trainningModeRadioButton,evaluationModeRadioButton , twoLettersMinRadioButton, threeLettersMinRadioButton;
+	@FXML MenuItem darkMode_menuItem;
 
 	
 	@Override
@@ -240,6 +244,16 @@ public class MakerController extends ParentController implements Initializable {
 	@FXML
 	public void darkMode() {
 		// TODO : Mode sombre en chargeant un CSS, pas obligatoire donc pas prioritaire
+		Main main = new Main();
+		Scene scene = Main.getScene();
+		//System.out.println(scene.getStylesheets());
+		if(scene.getStylesheets().stream().filter(value -> value.endsWith("darkmode.css")).collect(Collectors.toList()).size() > 0) {
+			main.unloadCSS("darkmode.css");
+		}
+		else {
+			main.loadCSS("darkmode.css");
+		}
+		//System.out.println(scene.getStylesheets().stream().filter(value -> value.endsWith("darkmode.css")).collect(Collectors.toList()));
 	}
 
 

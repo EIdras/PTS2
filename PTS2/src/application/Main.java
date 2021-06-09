@@ -27,7 +27,8 @@ public class Main extends Application {
 			screens.add((AnchorPane) makerLoader.load());
 			
 			scene = new Scene(screens.get(0));														// L'écran affiché sur la scene est le premier écran (d'index 0)
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());	// Lie le fichier CSS à la page
+			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());	// Lie le fichier CSS à la page
+			loadCSS("application.css");
 			primaryStage.getIcons().add(new Image(("file:src\\ressources\\img\\LOGO_IUT_ICON.png")));
 			primaryStage.setTitle("Reconstitution - APPLICATION ENSEIGNANT");
 			primaryStage.setResizable(false);
@@ -42,12 +43,23 @@ public class Main extends Application {
 		launch(args);
 	}
 	
+	public void loadCSS(String cssPath) {
+		scene.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
+	}
+	
+	public void unloadCSS(String cssPath) {
+		scene.getStylesheets().remove(getClass().getResource(cssPath).toExternalForm());
+	}
 	
 	public static FXMLLoader getMakerLoader() {
 		return makerLoader;
 	}
 	public static FXMLLoader getHomeLoader() {
 		return homeLoader;
+	}
+	
+	public static Scene getScene() {
+		return scene;
 	}
 
 	
