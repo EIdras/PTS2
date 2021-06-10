@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.MapChangeListener;
@@ -16,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
@@ -24,6 +26,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -41,20 +44,19 @@ public class MakerController extends ParentController implements Initializable {
 	Image playIcon = new Image("ressources/img/buttons/playButton.png");
 	Image pauseIcon = new Image("ressources/img/buttons/pauseButton.png");
 
-	@FXML
-	MediaView mediaView;
+	@FXML MediaView mediaView;
+	@FXML StackPane media_pane;
 	Media media;
 	MediaPlayer mediaPlayer;
 
 	@FXML Button btn_play;
 	@FXML TextField area_filePath, occultChar;
 	@FXML Text txt_wordCount;
-	@FXML TextArea field_transcription;
+	@FXML TextArea consigne_area, script_area, aide_area;
 	@FXML ImageView mp3_picture, soundButton, playPauseButton;
 	@FXML Slider time_slider, volume_slider;
 	@FXML CheckBox enableIncompleteWord, enableDisplayNbWordFound, enableAnswerDisplay;
 	@FXML RadioButton trainningModeRadioButton,evaluationModeRadioButton , twoLettersMinRadioButton, threeLettersMinRadioButton;
-	@FXML MenuItem darkMode_menuItem;
 
 	
 	@Override
@@ -93,42 +95,11 @@ public class MakerController extends ParentController implements Initializable {
 		playPauseButton.setDisable(false);
 		timeSliderUpdate();
 		volumeSliderUpdate();
+		mediaViewWidthListener();
+		mediaViewHeightListener();
 	}
 
 	public void timeSliderUpdate() {
-		// Remplacée par la méthode en dessous, car gérait mal la lecture d'un fichier après un autre
-		
-		/*
-		mediaPlayer.setOnReady(new Runnable() {
-
-			@Override
-			public void run() {
-				time_slider.setMax(mediaPlayer.getTotalDuration().toSeconds());
-			}
-		});
-
-		// Ecoute sur le slider. Quand il est modifié, modifie le temps du media player.
-		InvalidationListener sliderChangeListener = o -> {
-			Duration seekTo = Duration.seconds(time_slider.getValue());
-			mediaPlayer.seek(seekTo);
-		};
-		time_slider.valueProperty().addListener(sliderChangeListener);
-
-		// Lie le temps du media player au slider
-		mediaPlayer.currentTimeProperty().addListener(l -> {
-			// Supression temporaire de l'écoute sur le slider, pour qu'il ne réponde pas
-			// aux changements du temps de lecture
-			time_slider.valueProperty().removeListener(sliderChangeListener);
-
-			// Met a jour la valeur de temps du média avec la position du slider.
-			Duration currentTime = mediaPlayer.getCurrentTime();
-			time_slider.setValue(currentTime.toSeconds());
-
-			// Réactivation de l'écoute du slider
-			time_slider.valueProperty().addListener(sliderChangeListener);
-		});
-		
-		*/
 		
 		mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
 			@Override
@@ -243,7 +214,7 @@ public class MakerController extends ParentController implements Initializable {
 
 	@FXML
 	public void darkMode() {
-		// TODO : Mode sombre en chargeant un CSS, pas obligatoire donc pas prioritaire
+		// Mode sombre en chargeant un CSS
 		Main main = new Main();
 		Scene scene = Main.getScene();
 		//System.out.println(scene.getStylesheets());
@@ -290,6 +261,36 @@ public class MakerController extends ParentController implements Initializable {
 		enableAnswerDisplay.setDisable(false);
 		enableDisplayNbWordFound.setDisable(false);
 		enableIncompleteWord.setDisable(false);
+	}
+	
+	public void mediaViewWidthListener() {
+		
+		media_pane.widthProperty().addListener(new InvalidationListener() {
+
+			@Override
+			public void invalidated(Observable arg0) {
+				// TODO Auto-generated method stub
+				System.out.print("LARGEUR "+media_pane.widthProperty().getValue());
+				mediaView.setFitWidth(media_pane.widthProperty().getValue());
+				System.out.println(" = "+mediaView.getFitWidth());
+			}
+			
+		});
+
+	}
+	
+	public void mediaViewHeightListener() {
+		media_pane.heightProperty().addListener(new InvalidationListener() {
+
+			@Override
+			public void invalidated(Observable arg0) {
+				// TODO Auto-generated method stub
+				System.out.print("HAUTEUR "+media_pane.heightProperty().getValue());
+				mediaView.setFitHeight(media_pane.heightProperty().getValue());
+				System.out.println(" = "+mediaView.getFitHeight());
+			}
+			
+		});
 	}
 
 }

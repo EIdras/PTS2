@@ -13,7 +13,7 @@ public class ParentController implements Initializable {
 	@FXML ImageView iut_logo;
 	
 	public void setIcons() {
-		iut_logo.setImage(new Image("ressources/img/LOGO_IUT_FULL.png"));
+		iut_logo.setImage(new Image("ressources/img/LOGO_IUT_FULL2.png"));
 	}
 	
 	@Override
