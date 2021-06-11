@@ -25,7 +25,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -36,7 +38,8 @@ import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
 public class MakerController extends ParentController implements Initializable {
-	String path;
+	String mediaPath;
+	private static String saveFilePath;
 
 	private boolean atEndOfMedia = false;
 
@@ -44,6 +47,8 @@ public class MakerController extends ParentController implements Initializable {
 	Image playIcon = new Image("ressources/img/buttons/playButton.png");
 	Image pauseIcon = new Image("ressources/img/buttons/pauseButton.png");
 
+	@FXML BorderPane bPane;
+	
 	@FXML MediaView mediaView;
 	@FXML StackPane media_pane;
 	Media media;
@@ -62,6 +67,7 @@ public class MakerController extends ParentController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		super.initialize(arg0, arg1);
+		setMenuBar();
 		playPauseButton.setImage(pauseIcon);
 		soundButton.setImage(soundIcon);
 		addTextLimiter(occultChar, 1);
@@ -75,17 +81,17 @@ public class MakerController extends ParentController implements Initializable {
 		selectedFile = fileChooser.showOpenDialog(null);
 		if (selectedFile == null)
 			return;
-		path = selectedFile.toURI().toURL().toExternalForm();
+		mediaPath = selectedFile.toURI().toURL().toExternalForm();
 
 		launchMedia();
 		printFilePath();
-		if (path.contains(".mp3"))
+		if (mediaPath.contains(".mp3"))
 			afficheImage();
 	}
 
 	@FXML
 	public void launchMedia() {
-		media = new Media(path);
+		media = new Media(mediaPath);
 		mediaPlayer = new MediaPlayer(media);
 		mediaView.setMediaPlayer(mediaPlayer);
 		mediaView.autosize();
@@ -112,6 +118,15 @@ public class MakerController extends ParentController implements Initializable {
 		time_slider.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				mediaPlayer.seek(Duration.seconds(time_slider.getValue()));
+			}
+		});
+		
+		time_slider.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent arg0) {
+				// TODO Auto-generated method stub
 				mediaPlayer.seek(Duration.seconds(time_slider.getValue()));
 			}
 		});
@@ -142,7 +157,7 @@ public class MakerController extends ParentController implements Initializable {
 
 	@FXML
 	public void printFilePath() {
-		area_filePath.setPromptText(path);
+		area_filePath.setPromptText(mediaPath);
 	}
 
 	@FXML
@@ -214,17 +229,7 @@ public class MakerController extends ParentController implements Initializable {
 
 	@FXML
 	public void darkMode() {
-		// Mode sombre en chargeant un CSS
-		Main main = new Main();
-		Scene scene = Main.getScene();
-		//System.out.println(scene.getStylesheets());
-		if(scene.getStylesheets().stream().filter(value -> value.endsWith("darkmode.css")).collect(Collectors.toList()).size() > 0) {
-			main.unloadCSS("darkmode.css");
-		}
-		else {
-			main.loadCSS("darkmode.css");
-		}
-		//System.out.println(scene.getStylesheets().stream().filter(value -> value.endsWith("darkmode.css")).collect(Collectors.toList()));
+		super.darkMode();
 	}
 
 
@@ -291,6 +296,18 @@ public class MakerController extends ParentController implements Initializable {
 			}
 			
 		});
+	}
+
+
+	public void setSavePath(String filePath) {
+		this.saveFilePath = filePath;
+		System.out.println("Chemin du fichier à enregistrer : "+filePath);
+	}
+
+
+	@Override
+	public void setMenuBar() {
+		bPane.setTop(super.menuBar());
 	}
 
 }

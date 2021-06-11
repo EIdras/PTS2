@@ -21,10 +21,10 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			homeLoader = new FXMLLoader(getClass().getResource("home_page.fxml"));					// Instancie des FXMLLoader
+			homeLoader = new FXMLLoader(getClass().getResource("home_page_refait.fxml"));					// Instancie des FXMLLoader
 			makerLoader = new FXMLLoader(getClass().getResource("exercice_maker_refait.fxml"));
 			
-			screens.add((AnchorPane) homeLoader.load());											// Les ajoute à la liste des écrans
+			screens.add((BorderPane) homeLoader.load());											// Les ajoute à la liste des écrans
 			screens.add((BorderPane) makerLoader.load());
 			
 			scene = new Scene(screens.get(0));														// L'écran affiché sur la scene est le premier écran (d'index 0)
