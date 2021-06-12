@@ -1,7 +1,5 @@
-package application;
+package etu;
 
-import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -16,10 +14,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -32,10 +26,9 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.scene.media.MediaPlayer.Status;
-import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
-public class MakerController extends ParentController implements Initializable {
+public class EtuController extends ParentController implements Initializable {
 	String path;
 
 	private boolean atEndOfMedia = false;
@@ -50,13 +43,10 @@ public class MakerController extends ParentController implements Initializable {
 	MediaPlayer mediaPlayer;
 
 	@FXML Button btn_play;
-	@FXML TextField area_filePath, occultChar;
 	@FXML Text txt_wordCount;
-	@FXML TextArea consigne_area, script_area, aide_area;
+	@FXML TextArea consigne_area, script_area, input_area;
 	@FXML ImageView mp3_picture, soundButton, playPauseButton;
 	@FXML Slider time_slider, volume_slider;
-	@FXML CheckBox enableIncompleteWord, enableDisplayNbWordFound, enableAnswerDisplay;
-	@FXML RadioButton trainningModeRadioButton,evaluationModeRadioButton , twoLettersMinRadioButton, threeLettersMinRadioButton;
 
 	
 	@Override
@@ -64,26 +54,6 @@ public class MakerController extends ParentController implements Initializable {
 		super.initialize(arg0, arg1);
 		playPauseButton.setImage(pauseIcon);
 		soundButton.setImage(soundIcon);
-		addTextLimiter(occultChar, 1);
-	}
-	
-	
-	@FXML
-	public void chooseMediaPath() throws MalformedURLException {
-		FileChooser fileChooser = new FileChooser();
-		FileChooser.ExtensionFilter extFilter = 
-                new FileChooser.ExtensionFilter("Media files (mp3, mp4)", "*.mp3", "*.mp4");
-        fileChooser.getExtensionFilters().add(extFilter);
-		File selectedFile = new File("");
-		selectedFile = fileChooser.showOpenDialog(null);
-		if (selectedFile == null)
-			return;
-		path = selectedFile.toURI().toURL().toExternalForm();
-
-		launchMedia();
-		printFilePath();
-		if (path.contains(".mp3"))
-			afficheImage();
 	}
 
 	@FXML
@@ -141,11 +111,6 @@ public class MakerController extends ParentController implements Initializable {
 			mediaPlayer.setVolume(volume_slider.getValue() / 100.0); // Change le volume sonore selon la valeur du
 																		// slider vertical
 		}));
-	}
-
-	@FXML
-	public void printFilePath() {
-		area_filePath.setPromptText(path);
 	}
 
 	@FXML
@@ -243,28 +208,6 @@ public class MakerController extends ParentController implements Initializable {
 			}
 		});
 	}
-
-	@FXML
-	public void disableTrainningButtons() {
-		// Désactive les checkbox de l'entrainnement
-		enableAnswerDisplay.setDisable(true);
-		enableDisplayNbWordFound.setDisable(true);
-		enableIncompleteWord.setDisable(true);
-
-		// Active les checkbox de l'évaluation
-		// TODO (pas d'options)
-	}
-
-	@FXML
-	public void disabletEvaluationButtons() {
-		// Active les checkbox de l'évaluation
-		// TODO (pas d'options)
-
-		// Désactive les checkbox de l'entrainnement
-		enableAnswerDisplay.setDisable(false);
-		enableDisplayNbWordFound.setDisable(false);
-		enableIncompleteWord.setDisable(false);
-	}
 	
 	public void mediaViewWidthListener() {
 		
@@ -272,7 +215,6 @@ public class MakerController extends ParentController implements Initializable {
 
 			@Override
 			public void invalidated(Observable arg0) {
-				// TODO Auto-generated method stub
 				System.out.print("LARGEUR "+media_pane.widthProperty().getValue());
 				mediaView.setFitWidth(media_pane.widthProperty().getValue());
 				System.out.println(" = "+mediaView.getFitWidth());
@@ -287,7 +229,6 @@ public class MakerController extends ParentController implements Initializable {
 
 			@Override
 			public void invalidated(Observable arg0) {
-				// TODO Auto-generated method stub
 				System.out.print("HAUTEUR "+media_pane.heightProperty().getValue());
 				mediaView.setFitHeight(media_pane.heightProperty().getValue());
 				System.out.println(" = "+mediaView.getFitHeight());
