@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
@@ -23,6 +24,10 @@ public class HomeController extends ParentController implements Initializable {
 	String path;
 	@FXML
 	TextField filePath;
+	@FXML
+	Label errorLabel;
+	@FXML
+	Label errorFileNameLabel;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -40,8 +45,17 @@ public class HomeController extends ParentController implements Initializable {
 	public void Drop(DragEvent event) throws IOException {
 		List<File> files = event.getDragboard().getFiles();
 		f = files.get(0);
-		System.out.println("Sélection effectuée");
-		openFile(f);
+		if (f.getAbsolutePath().endsWith(".exo")) {
+			errorLabel.setVisible(false);
+			errorFileNameLabel.setVisible(false);
+			path = f.getAbsolutePath();
+			printFilePath();
+			openFile(f);
+		} else {
+			errorLabel.setVisible(true);
+			errorFileNameLabel.setText("Le fichier" + path.split("/")[path.split("/").length-1] + "n'est pas valide");
+			errorFileNameLabel.setVisible(true);
+		}
 	}
 
 	@FXML

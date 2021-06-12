@@ -1,6 +1,7 @@
 package etu;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,8 @@ import javafx.scene.media.MediaPlayer.Status;
 import javafx.util.Duration;
 
 public class EtuController extends ParentController implements Initializable {
-	String path;
+	String path, script;
+	ArrayList<String> aide;
 
 	private boolean atEndOfMedia = false;
 
@@ -54,6 +56,13 @@ public class EtuController extends ParentController implements Initializable {
 		super.initialize(arg0, arg1);
 		playPauseButton.setImage(pauseIcon);
 		soundButton.setImage(soundIcon);
+	}
+	
+	public void setParamaters(String path, String script, ArrayList<String> aide) {
+		this.path = path;
+		this.script = script;
+		script_area.setText(script);
+		this.aide = aide;
 	}
 
 	@FXML

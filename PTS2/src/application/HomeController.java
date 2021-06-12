@@ -36,7 +36,7 @@ public class HomeController extends ParentController implements Initializable {
         List<File> files = event.getDragboard().getFiles();
         f = files.get(0);
         System.out.println("Sélection effectuée");
-        openFile(f);
+        openFile(f);;
     }
 	
 	
