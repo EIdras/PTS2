@@ -21,6 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -39,6 +40,7 @@ public class EtuController extends ParentController implements Initializable {
 	Image playIcon = new Image("ressources/img/buttons/playButton.png");
 	Image pauseIcon = new Image("ressources/img/buttons/pauseButton.png");
 
+	@FXML BorderPane bPane;
 	@FXML MediaView mediaView;
 	@FXML StackPane media_pane;
 	Media media;
@@ -56,6 +58,7 @@ public class EtuController extends ParentController implements Initializable {
 		super.initialize(arg0, arg1);
 		playPauseButton.setImage(pauseIcon);
 		soundButton.setImage(soundIcon);
+		setMenuBar();
 	}
 	
 	public void setParamaters(String path, String script, ArrayList<String> aide) {
@@ -244,6 +247,11 @@ public class EtuController extends ParentController implements Initializable {
 			}
 			
 		});
+	}
+
+	@Override
+	public void setMenuBar() {
+		bPane.setTop(super.menuBar());
 	}
 
 }

@@ -11,7 +11,8 @@ import javafx.scene.layout.BorderPane;
 public class SaveFileController extends ParentController implements Initializable{
 
 	@FXML BorderPane bPane;
-	@FXML Label consigne, script, aide, media, occult, incomplet, solution, sauvegarde;
+	@FXML Label consigne_lbl, script_lbl, aide_lbl, media_lbl, occult_lbl, incomplet_lbl, solution_lbl, sauvegarde_lbl;
+	private static String consigne, script, aide, media, occult, incomplet, solution, sauvegarde;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -24,14 +25,23 @@ public class SaveFileController extends ParentController implements Initializabl
 	
 	
 	public void fillRecap(String consigne, String script, String aide, String media, String occult, String incomplet, String solution, String sauvegarde) {
-		this.consigne.setText(consigne);
-		this.script.setText(script);
-		this.aide.setText(aide);
-		this.media.setText(media);
-		this.occult.setText(occult);
-		this.incomplet.setText(incomplet);
-		this.solution.setText(solution);
-		this.sauvegarde.setText(sauvegarde);
+		this.consigne = consigne;
+		this.script = script;
+		this.aide = aide;
+		this.occult = occult;
+		this.media = media;
+		this.incomplet = incomplet;
+		this.solution = solution;
+		this.sauvegarde = sauvegarde;
+		
+		this.consigne_lbl.setText(consigne);
+		this.script_lbl.setText(script);
+		this.aide_lbl.setText(aide);
+		this.media_lbl.setText(media);
+		this.occult_lbl.setText(occult);
+		this.incomplet_lbl.setText(incomplet);
+		this.solution_lbl.setText(solution);
+		this.sauvegarde_lbl.setText(sauvegarde);
 	}
 
 }

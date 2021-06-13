@@ -14,10 +14,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 
 public class HomeController extends ParentController implements Initializable {
 
+	@FXML BorderPane bPane;
 	@FXML
 	ImageView iut_logo;
 	File f;
@@ -32,6 +34,7 @@ public class HomeController extends ParentController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		super.initialize(arg0, arg1);
+		setMenuBar();
 	}
 
 	@FXML
@@ -89,5 +92,10 @@ public class HomeController extends ParentController implements Initializable {
 	@FXML
 	public void changePage() {
 		Main.setScreen(1);
+	}
+
+	@Override
+	public void setMenuBar() {
+		bPane.setTop(super.menuBar());
 	}
 }
