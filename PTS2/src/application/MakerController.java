@@ -65,7 +65,7 @@ public class MakerController extends ParentController implements Initializable {
 	@FXML ImageView mp3_picture, soundButton, playPauseButton;
 	@FXML Slider time_slider, volume_slider;
 	@FXML CheckBox enableIncompleteWord, enableDisplayNbWordFound, enableAnswerDisplay;
-	@FXML RadioButton trainningModeRadioButton,evaluationModeRadioButton , twoLettersMinRadioButton, threeLettersMinRadioButton;
+	@FXML RadioButton trainingModeRadioButton ,evaluationModeRadioButton , twoLettersMinRadioButton, threeLettersMinRadioButton;
 	@FXML ChoiceBox<String> incompleteWordNbLetters;
 	
 	@Override
@@ -256,22 +256,24 @@ public class MakerController extends ParentController implements Initializable {
 	}
 
 	@FXML
-	public void disableTrainningButtons() {
-		// Désactive les checkbox de l'entrainnement
+	public void disableTrainingButtons() {
+		evaluationModeRadioButton.setDisable(true);
+		trainingModeRadioButton.setDisable(false);
+		trainingModeRadioButton.setSelected(false);
+		
 		enableAnswerDisplay.setDisable(true);
+		incompleteWordNbLetters.setDisable(true);
 		enableDisplayNbWordFound.setDisable(true);
 		enableIncompleteWord.setDisable(true);
-
-		// Active les checkbox de l'évaluation
-		// TODO (pas d'options)
 	}
 
 	@FXML
 	public void disabletEvaluationButtons() {
-		// Active les checkbox de l'évaluation
-		// TODO (pas d'options)
-
-		// Désactive les checkbox de l'entrainnement
+		enableIncompleteWord();
+		trainingModeRadioButton.setDisable(true);
+		evaluationModeRadioButton.setDisable(false);
+		evaluationModeRadioButton.setSelected(false);
+		
 		enableAnswerDisplay.setDisable(false);
 		enableDisplayNbWordFound.setDisable(false);
 		enableIncompleteWord.setDisable(false);
@@ -279,7 +281,7 @@ public class MakerController extends ParentController implements Initializable {
 	
 	@FXML 
 	public void enableIncompleteWord() {
-		if (incompleteWordNbLetters.isDisable()) {
+		if (enableIncompleteWord.isSelected()) {
 			incompleteWordNbLetters.setDisable(false);
 		}
 		else {
