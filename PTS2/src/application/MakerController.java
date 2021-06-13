@@ -274,10 +274,7 @@ public class MakerController extends ParentController implements Initializable {
 
 			@Override
 			public void invalidated(Observable arg0) {
-				// TODO Auto-generated method stub
-				System.out.print("LARGEUR "+media_pane.widthProperty().getValue());
 				mediaView.setFitWidth(media_pane.widthProperty().getValue());
-				System.out.println(" = "+mediaView.getFitWidth());
 			}
 			
 		});
@@ -289,10 +286,7 @@ public class MakerController extends ParentController implements Initializable {
 
 			@Override
 			public void invalidated(Observable arg0) {
-				// TODO Auto-generated method stub
-				System.out.print("HAUTEUR "+media_pane.heightProperty().getValue());
 				mediaView.setFitHeight(media_pane.heightProperty().getValue());
-				System.out.println(" = "+mediaView.getFitHeight());
 			}
 			
 		});

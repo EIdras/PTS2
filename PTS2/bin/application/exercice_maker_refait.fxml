@@ -63,7 +63,7 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TextArea fx:id="script_area" prefHeight="450.0" prefWidth="565.0" promptText="Collez ici le script du média lié à l'exercice. Cela correspond au texte que l'étudiant devra retrouver">
+                  <TextArea fx:id="script_area" prefHeight="450.0" prefWidth="565.0" promptText="Collez ici le script du média lié à l'exercice. Cela correspond au texte que l'étudiant devra retrouver" wrapText="true">
                      <VBox.margin>
                         <Insets bottom="5.0" left="30.0" right="30.0" top="5.0" />
                      </VBox.margin>
@@ -121,7 +121,7 @@
                   <StackPane fx:id="media_pane" maxHeight="375.0" maxWidth="885.0" minHeight="255.0" minWidth="550.0" VBox.vgrow="SOMETIMES">
                      <children>
                         <MediaView fx:id="mediaView" fitHeight="250.0" fitWidth="450.0" mouseTransparent="true" />
-                        <Slider fx:id="volume_slider" orientation="VERTICAL" prefWidth="30.0" visible="false" StackPane.alignment="CENTER_RIGHT">
+                        <Slider fx:id="volume_slider" orientation="VERTICAL" prefWidth="30.0" value="30.0" visible="false" StackPane.alignment="CENTER_RIGHT">
                            <StackPane.margin>
                               <Insets />
                            </StackPane.margin>
