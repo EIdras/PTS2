@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 	
-	private static FXMLLoader homeLoader, makerLoader;
+	private static FXMLLoader homeLoader, makerLoader, saveFileLoader;
 	private static List<Pane> screens = new ArrayList<>(); // Liste des écrans
 	private static Scene scene;
 	
@@ -23,9 +23,11 @@ public class Main extends Application {
 		try {
 			homeLoader = new FXMLLoader(getClass().getResource("home_page_refait.fxml"));					// Instancie des FXMLLoader
 			makerLoader = new FXMLLoader(getClass().getResource("exercice_maker_refait.fxml"));
+			saveFileLoader = new FXMLLoader(getClass().getResource("save_file_popup.fxml"));
 			
 			screens.add((BorderPane) homeLoader.load());											// Les ajoute à la liste des écrans
 			screens.add((BorderPane) makerLoader.load());
+			screens.add((BorderPane) saveFileLoader.load());
 			
 			scene = new Scene(screens.get(0));														// L'écran affiché sur la scene est le premier écran (d'index 0)
 			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());	// Lie le fichier CSS à la page
@@ -60,6 +62,9 @@ public class Main extends Application {
 	}
 	public static FXMLLoader getHomeLoader() {
 		return homeLoader;
+	}
+	public static FXMLLoader getSaveFileLoader() {
+		return saveFileLoader;
 	}
 	
 	public static Scene getScene() {

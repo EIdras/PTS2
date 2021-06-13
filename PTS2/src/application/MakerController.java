@@ -1,6 +1,7 @@
 package application;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
@@ -35,6 +37,8 @@ import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class MakerController extends ParentController implements Initializable {
@@ -62,7 +66,7 @@ public class MakerController extends ParentController implements Initializable {
 	@FXML Slider time_slider, volume_slider;
 	@FXML CheckBox enableIncompleteWord, enableDisplayNbWordFound, enableAnswerDisplay;
 	@FXML RadioButton trainningModeRadioButton,evaluationModeRadioButton , twoLettersMinRadioButton, threeLettersMinRadioButton;
-
+	@FXML ChoiceBox<String> incompleteWordNbLetters;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -71,6 +75,8 @@ public class MakerController extends ParentController implements Initializable {
 		playPauseButton.setImage(pauseIcon);
 		soundButton.setImage(soundIcon);
 		addTextLimiter(occultChar, 1);
+		incompleteWordNbLetters.getItems().addAll("2 caractères", "3 caractères");
+		incompleteWordNbLetters.setValue("2 caractères");
 	}
 	
 	
@@ -266,6 +272,49 @@ public class MakerController extends ParentController implements Initializable {
 		enableAnswerDisplay.setDisable(false);
 		enableDisplayNbWordFound.setDisable(false);
 		enableIncompleteWord.setDisable(false);
+	}
+	
+	@FXML 
+	public void enableIncompleteWord() {
+		if (incompleteWordNbLetters.isDisable()) {
+			incompleteWordNbLetters.setDisable(false);
+		}
+		else {
+			incompleteWordNbLetters.setDisable(true);
+		}
+		
+	}
+	
+	
+	@FXML
+	public void saveExercise() throws IOException {
+		Stage popUpStage = new Stage();
+		popUpStage.initModality(Modality.APPLICATION_MODAL);
+
+		Scene popUpScene = new Scene(Main.getScreen(2));
+		
+		String consigne = consigne_area.getText();
+		String script = script_area.getText();
+		String aide = aide_area.getText();
+		String media = mediaPath;
+		String occult = occultChar.getText();
+		String incomplet = null;
+		if (enableIncompleteWord.isSelected()) {
+			incomplet = incompleteWordNbLetters.getValue();
+		}
+		else {
+			incomplet = "false";
+		}
+		String solution = String.valueOf(enableAnswerDisplay.isSelected());
+		String sauvegarde = saveFilePath;
+		
+		
+		SaveFileController saveController = Main.getSaveFileLoader().getController();
+		saveController.fillRecap(consigne, script, aide, media, occult, incomplet, solution, sauvegarde);
+		popUpStage.setTitle("Sauvegarde de votre exercice - Résumé");
+		popUpStage.setScene(popUpScene);
+		popUpStage.show();
+
 	}
 	
 	public void mediaViewWidthListener() {

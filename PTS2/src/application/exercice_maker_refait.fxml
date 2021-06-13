@@ -218,32 +218,38 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <CheckBox mnemonicParsing="false" text="Autoriser mot incomplet">
+                        <CheckBox fx:id="enableIncompleteWord" mnemonicParsing="false" onAction="#enableIncompleteWord" text="Autoriser mot incomplet">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </CheckBox>
-                        <ChoiceBox disable="true">
+                        <ChoiceBox fx:id="incompleteWordNbLetters" disable="true">
                            <FlowPane.margin>
                               <Insets left="50.0" />
                            </FlowPane.margin>
                         </ChoiceBox>
                      </children>
                   </FlowPane>
-                  <CheckBox mnemonicParsing="false" text="Autoriser l'affichage en temps réel du nombre de mots découverts" GridPane.rowIndex="1">
+                  <CheckBox fx:id="enableDisplayNbWordFound" mnemonicParsing="false" text="Autoriser l'affichage en temps réel du nombre de mots découverts" GridPane.rowIndex="1">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </CheckBox>
-                  <CheckBox mnemonicParsing="false" text="Autoriser l'affichage de la solution" GridPane.rowIndex="2">
+                  <CheckBox fx:id="enableAnswerDisplay" mnemonicParsing="false" text="Autoriser l'affichage de la solution" GridPane.rowIndex="2">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </CheckBox>
+                  <Button mnemonicParsing="false" onAction="#saveExercise" text="Sauvegarder l'exercice" textFill="#229000" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
                </children>
                <GridPane.margin>
                   <Insets bottom="5.0" left="30.0" right="30.0" top="5.0" />

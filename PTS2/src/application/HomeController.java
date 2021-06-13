@@ -30,7 +30,6 @@ public class HomeController extends ParentController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		super.initialize(arg0, arg1);
-		//tradLogo_view.setImage(new Image("ressources/img/buttons/soundButton.png"));
 		setMenuBar();
 	}
 
