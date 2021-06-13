@@ -1,9 +1,7 @@
-package application;
+package etu;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -17,33 +15,23 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.scene.media.MediaPlayer.Status;
-import javafx.stage.FileChooser;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class MakerController extends ParentController implements Initializable {
-	String mediaPath;
-	private static String saveFilePath;
+public class EtuController extends ParentController implements Initializable {
+	String path, script;
+	ArrayList<String> aide;
 
 	private boolean atEndOfMedia = false;
 
@@ -51,56 +39,35 @@ public class MakerController extends ParentController implements Initializable {
 	Image playIcon = new Image("ressources/img/buttons/playButton.png");
 	Image pauseIcon = new Image("ressources/img/buttons/pauseButton.png");
 
-	@FXML BorderPane bPane;
-	
 	@FXML MediaView mediaView;
 	@FXML StackPane media_pane;
 	Media media;
 	MediaPlayer mediaPlayer;
 
 	@FXML Button btn_play;
-	@FXML TextField area_filePath, occultChar;
 	@FXML Text txt_wordCount;
-	@FXML TextArea consigne_area, script_area, aide_area;
+	@FXML TextArea consigne_area, script_area, input_area;
 	@FXML ImageView mp3_picture, soundButton, playPauseButton;
 	@FXML Slider time_slider, volume_slider;
-	@FXML CheckBox enableIncompleteWord, enableDisplayNbWordFound, enableAnswerDisplay;
-	@FXML RadioButton trainningModeRadioButton,evaluationModeRadioButton , twoLettersMinRadioButton, threeLettersMinRadioButton;
-	@FXML ChoiceBox<String> incompleteWordNbLetters;
+
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		super.initialize(arg0, arg1);
-		setMenuBar();
 		playPauseButton.setImage(pauseIcon);
 		soundButton.setImage(soundIcon);
-		addTextLimiter(occultChar, 1);
-		incompleteWordNbLetters.getItems().addAll("2 caractères", "3 caractères");
-		incompleteWordNbLetters.setValue("2 caractères");
 	}
 	
-	
-	@FXML
-	public void chooseMediaPath() throws MalformedURLException {
-		FileChooser fileChooser = new FileChooser();
-		FileChooser.ExtensionFilter extFilter = 
-                new FileChooser.ExtensionFilter("Media files (mp3, mp4)", "*.mp3", "*.mp4");
-        fileChooser.getExtensionFilters().add(extFilter);
-		File selectedFile = new File("");
-		selectedFile = fileChooser.showOpenDialog(null);
-		if (selectedFile == null)
-			return;
-		mediaPath = selectedFile.toURI().toURL().toExternalForm();
-
-		launchMedia();
-		printFilePath();
-		if (mediaPath.contains(".mp3"))
-			afficheImage();
+	public void setParamaters(String path, String script, ArrayList<String> aide) {
+		this.path = path;
+		this.script = script;
+		script_area.setText(script);
+		this.aide = aide;
 	}
 
 	@FXML
 	public void launchMedia() {
-		media = new Media(mediaPath);
+		media = new Media(path);
 		mediaPlayer = new MediaPlayer(media);
 		mediaView.setMediaPlayer(mediaPlayer);
 		mediaView.autosize();
@@ -130,15 +97,6 @@ public class MakerController extends ParentController implements Initializable {
 				mediaPlayer.seek(Duration.seconds(time_slider.getValue()));
 			}
 		});
-		
-		time_slider.setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-			@Override
-			public void handle(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				mediaPlayer.seek(Duration.seconds(time_slider.getValue()));
-			}
-		});
 
 		time_slider.setOnMouseDragged(new EventHandler<MouseEvent>() {
 			@Override
@@ -162,11 +120,6 @@ public class MakerController extends ParentController implements Initializable {
 			mediaPlayer.setVolume(volume_slider.getValue() / 100.0); // Change le volume sonore selon la valeur du
 																		// slider vertical
 		}));
-	}
-
-	@FXML
-	public void printFilePath() {
-		area_filePath.setPromptText(mediaPath);
 	}
 
 	@FXML
@@ -238,7 +191,17 @@ public class MakerController extends ParentController implements Initializable {
 
 	@FXML
 	public void darkMode() {
-		super.darkMode();
+		// Mode sombre en chargeant un CSS
+		Main main = new Main();
+		Scene scene = Main.getScene();
+		//System.out.println(scene.getStylesheets());
+		if(scene.getStylesheets().stream().filter(value -> value.endsWith("darkmode.css")).collect(Collectors.toList()).size() > 0) {
+			main.unloadCSS("darkmode.css");
+		}
+		else {
+			main.loadCSS("darkmode.css");
+		}
+		//System.out.println(scene.getStylesheets().stream().filter(value -> value.endsWith("darkmode.css")).collect(Collectors.toList()));
 	}
 
 
@@ -254,71 +217,6 @@ public class MakerController extends ParentController implements Initializable {
 			}
 		});
 	}
-
-	@FXML
-	public void disableTrainningButtons() {
-		// Désactive les checkbox de l'entrainnement
-		enableAnswerDisplay.setDisable(true);
-		enableDisplayNbWordFound.setDisable(true);
-		enableIncompleteWord.setDisable(true);
-
-		// Active les checkbox de l'évaluation
-		// TODO (pas d'options)
-	}
-
-	@FXML
-	public void disabletEvaluationButtons() {
-		// Active les checkbox de l'évaluation
-		// TODO (pas d'options)
-
-		// Désactive les checkbox de l'entrainnement
-		enableAnswerDisplay.setDisable(false);
-		enableDisplayNbWordFound.setDisable(false);
-		enableIncompleteWord.setDisable(false);
-	}
-	
-	@FXML 
-	public void enableIncompleteWord() {
-		if (incompleteWordNbLetters.isDisable()) {
-			incompleteWordNbLetters.setDisable(false);
-		}
-		else {
-			incompleteWordNbLetters.setDisable(true);
-		}
-		
-	}
-	
-	
-	@FXML
-	public void saveExercise() throws IOException {
-		Stage popUpStage = new Stage();
-		popUpStage.initModality(Modality.APPLICATION_MODAL);
-
-		Scene popUpScene = new Scene(Main.getScreen(2));
-		
-		String consigne = consigne_area.getText();
-		String script = script_area.getText();
-		String aide = aide_area.getText();
-		String media = mediaPath;
-		String occult = occultChar.getText();
-		String incomplet = null;
-		if (enableIncompleteWord.isSelected()) {
-			incomplet = incompleteWordNbLetters.getValue();
-		}
-		else {
-			incomplet = "false";
-		}
-		String solution = String.valueOf(enableAnswerDisplay.isSelected());
-		String sauvegarde = saveFilePath;
-		
-		
-		SaveFileController saveController = Main.getSaveFileLoader().getController();
-		saveController.fillRecap(consigne, script, aide, media, occult, incomplet, solution, sauvegarde);
-		popUpStage.setTitle("Sauvegarde de votre exercice - Résumé");
-		popUpStage.setScene(popUpScene);
-		popUpStage.show();
-
-	}
 	
 	public void mediaViewWidthListener() {
 		
@@ -326,7 +224,9 @@ public class MakerController extends ParentController implements Initializable {
 
 			@Override
 			public void invalidated(Observable arg0) {
+				System.out.print("LARGEUR "+media_pane.widthProperty().getValue());
 				mediaView.setFitWidth(media_pane.widthProperty().getValue());
+				System.out.println(" = "+mediaView.getFitWidth());
 			}
 			
 		});
@@ -338,22 +238,12 @@ public class MakerController extends ParentController implements Initializable {
 
 			@Override
 			public void invalidated(Observable arg0) {
+				System.out.print("HAUTEUR "+media_pane.heightProperty().getValue());
 				mediaView.setFitHeight(media_pane.heightProperty().getValue());
+				System.out.println(" = "+mediaView.getFitHeight());
 			}
 			
 		});
-	}
-
-
-	public void setSavePath(String filePath) {
-		this.saveFilePath = filePath;
-		System.out.println("Chemin du fichier à enregistrer : "+filePath);
-	}
-
-
-	@Override
-	public void setMenuBar() {
-		bPane.setTop(super.menuBar());
 	}
 
 }
