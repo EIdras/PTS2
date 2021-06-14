@@ -129,7 +129,7 @@
                               <Insets bottom="10.0" top="100.0" />
                            </padding>
                         </Slider>
-                        <ImageView fitHeight="275.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="mp3_picture" fitHeight="275.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                      <VBox.margin>
                         <Insets left="30.0" right="30.0" />
