@@ -1,6 +1,9 @@
 package application;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -11,9 +14,9 @@ import javafx.scene.layout.BorderPane;
 public class SaveFileController extends ParentController implements Initializable{
 
 	@FXML BorderPane bPane;
-	@FXML Label consigne_lbl, script_lbl, aide_lbl, media_lbl, occult_lbl, incomplet_lbl, solution_lbl, sauvegarde_lbl;
-	private static String /*nomExo,*/ consigne, script, aide, media, sauvegarde;
-	private static int mode, incomplet, tempsLimite;
+	@FXML Label consigne_lbl, script_lbl, aide_lbl, media_lbl, occult_lbl, incomplet_lbl, solution_lbl, sauvegarde_lbl, mode_lbl;
+	private static String nomExo, consigne, script, aide, media, sauvegarde, mode;
+	private static int incomplet, tempsLimite;
 	private static char occult;
 	private static boolean solution, affichageMots;
 	
@@ -43,7 +46,7 @@ public class SaveFileController extends ParentController implements Initializabl
 	 */
 	
 	
-	public void fillRecap(/*String nomExo,*/ String consigne, String script, String aide, String media, char occult, String sauvegarde, int mode, boolean affichageMots, int incomplet, boolean solution, int tempsLimite) {
+	public void fillRecap(String nomExo, String consigne, String script, String aide, String media, char occult, String sauvegarde, String mode, boolean affichageMots, int incomplet, boolean solution, int tempsLimite) {
 		/*
 		 * 
 		 * 
@@ -54,7 +57,7 @@ public class SaveFileController extends ParentController implements Initializabl
   
 		 */
 		
-		//this.nomExo = nomExo;
+		this.nomExo = nomExo;
 		this.consigne = consigne;
 		this.script = script;
 		this.aide = aide;
@@ -76,6 +79,13 @@ public class SaveFileController extends ParentController implements Initializabl
 		this.incomplet_lbl.setText(String.valueOf(incomplet));
 		this.solution_lbl.setText(String.valueOf(solution));
 		this.sauvegarde_lbl.setText(sauvegarde);
+		this.mode_lbl.setText(mode);
+	}
+	
+	@FXML 
+	public void SaveFile(){
+		List<String> aideFinal = Arrays.asList(aide.split(" +"));
+		new FileManager().sauvegarderFichier(nomExo, sauvegarde, consigne, script, aideFinal, media, String.valueOf(occult), mode, affichageMots ? 1 : 0, incomplet, 1 ,solution  ? 1 : 0, tempsLimite);
 	}
 
 

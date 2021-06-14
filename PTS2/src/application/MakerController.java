@@ -42,7 +42,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class MakerController extends ParentController implements Initializable {
-	String mediaPath;
+	String mediaPath, nomExo;
 	private static String saveFilePath;
 
 	private boolean atEndOfMedia = false;
@@ -59,7 +59,7 @@ public class MakerController extends ParentController implements Initializable {
 	MediaPlayer mediaPlayer;
 
 	@FXML Button btn_play;
-	@FXML TextField area_filePath, occultChar, timeMin_field, timeSec_field;
+	@FXML TextField area_filePath, occultChar, timeMin_field, timeSec_field, exoName;
 	@FXML Text txt_wordCount;
 	@FXML TextArea consigne_area, script_area, aide_area;
 	@FXML ImageView mp3_picture, soundButton, playPauseButton;
@@ -318,6 +318,7 @@ public class MakerController extends ParentController implements Initializable {
 		String script = script_area.getText();
 		String aide = aide_area.getText();
 		String media = mediaPath;
+		nomExo = exoName.getText();
 		String occultStr = occultChar.getText() + " ";
 		char occult = occultStr.charAt(0);
 		if (occult == ' ') {
@@ -359,7 +360,7 @@ public class MakerController extends ParentController implements Initializable {
 		
 		
 		SaveFileController saveController = Main.getSaveFileLoader().getController();
-		saveController.fillRecap(consigne, script, aide, media, occult, sauvegarde, mode, affichageMots, incomplet, solution, tempsLimite);
+		saveController.fillRecap(nomExo, consigne, script, aide, media, occult, sauvegarde, mode == 1 ? "entrainement" : "evaluation", affichageMots, incomplet, solution, tempsLimite);
 		popUpStage.setTitle("Sauvegarde de votre exercice - Résumé");
 		popUpStage.setScene(popUpScene);
 		popUpStage.show();
