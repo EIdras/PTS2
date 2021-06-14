@@ -30,7 +30,6 @@ public class Main extends Application {
 			screens.add((BorderPane) saveFileLoader.load());
 			
 			scene = new Scene(screens.get(0));														// L'écran affiché sur la scene est le premier écran (d'index 0)
-			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());	// Lie le fichier CSS à la page
 			loadCSS("application.css");
 			primaryStage.getIcons().add(new Image(("file:src\\ressources\\img\\LOGO_IUT_ICON.png")));
 			primaryStage.setTitle("Reconstitution - Application ENSEIGNANT");

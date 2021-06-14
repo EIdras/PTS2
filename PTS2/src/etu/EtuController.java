@@ -48,7 +48,8 @@ public class EtuController extends ParentController implements Initializable {
 
 	@FXML Button btn_play;
 	@FXML Text txt_wordCount;
-	@FXML TextArea consigne_area, script_area, input_area;
+	@FXML TextArea consigne_area, script_area;
+	@FXML TextField input_field;
 	@FXML ImageView mp3_picture, soundButton, playPauseButton;
 	@FXML Slider time_slider, volume_slider;
 
@@ -192,6 +193,7 @@ public class EtuController extends ParentController implements Initializable {
 		}
 	}
 
+	@Override
 	@FXML
 	public void darkMode() {
 		// Mode sombre en chargeant un CSS
@@ -204,7 +206,6 @@ public class EtuController extends ParentController implements Initializable {
 		else {
 			main.loadCSS("darkmode.css");
 		}
-		//System.out.println(scene.getStylesheets().stream().filter(value -> value.endsWith("darkmode.css")).collect(Collectors.toList()));
 	}
 
 

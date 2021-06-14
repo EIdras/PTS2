@@ -172,7 +172,7 @@
                         <HBox alignment="CENTER_LEFT" prefWidth="200.0">
                            <children>
                               <Label text="Caractère d'occultation :" />
-                              <TextField fx:id="occultChar" prefHeight="25.0" prefWidth="25.0" promptText="#">
+                              <TextField fx:id="occultChar" prefHeight="25.0" prefWidth="25.0" promptText="#" text="#">
                                  <HBox.margin>
                                     <Insets left="15.0" />
                                  </HBox.margin>
@@ -212,7 +212,9 @@
             </VBox>
             <GridPane maxHeight="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="468.0" minWidth="10.0" prefWidth="370.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="468.0" minWidth="10.0" prefWidth="12.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="277.0" minWidth="10.0" prefWidth="187.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -221,7 +223,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0">
+                  <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="0.0">
                      <children>
                         <CheckBox fx:id="enableIncompleteWord" mnemonicParsing="false" onAction="#enableIncompleteWord" text="Autoriser mot incomplet">
                            <font>
@@ -235,7 +237,7 @@
                         </ChoiceBox>
                      </children>
                   </FlowPane>
-                  <CheckBox fx:id="enableDisplayNbWordFound" mnemonicParsing="false" text="Autoriser l'affichage en temps réel du nombre de mots découverts" GridPane.rowIndex="1">
+                  <CheckBox fx:id="enableDisplayNbWordFound" mnemonicParsing="false" text="Autoriser l'affichage du nombre de mots découverts" GridPane.rowIndex="1">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -245,11 +247,38 @@
                         <Font size="14.0" />
                      </font>
                   </CheckBox>
-                  <Button mnemonicParsing="false" onAction="#saveExercise" text="Sauvegarder l'exercice" textFill="#229000" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#saveExercise" text="Sauvegarder l'exercice" textFill="#229000" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Button>
+                  <Label text="Limite de temps :" GridPane.columnIndex="2">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <children>
+                        <TextField fx:id="timeMin_field" maxWidth="50.0" promptText="5" text="5" />
+                        <Label alignment="CENTER" text="min">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="timeSec_field" maxWidth="50.0" promptText="00" text="00" />
+                        <Label text="s">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
                <GridPane.margin>
                   <Insets bottom="5.0" left="30.0" right="30.0" top="5.0" />

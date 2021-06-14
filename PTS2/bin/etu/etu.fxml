@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -27,7 +28,7 @@
         <rowConstraints>
           <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="83.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="534.0" minHeight="0.0" prefHeight="438.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="566.0" minHeight="10.0" prefHeight="144.0" vgrow="SOMETIMES" />
+          <RowConstraints prefHeight="100.0" />
         </rowConstraints>
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
@@ -74,14 +75,11 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TextArea fx:id="input_area" prefHeight="200.0" prefWidth="565.0" promptText="Entrez ici les mots que vous pensez entendre. Vous pouvez entrez une phrase ou juste un mot">
+                  <TextField fx:id="input_field" promptText="Entrez ici les mots que vous pensez entendre. Vous pouvez entrez une phrase ou juste un mot">
                      <VBox.margin>
                         <Insets bottom="5.0" left="30.0" right="30.0" top="5.0" />
                      </VBox.margin>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </TextArea>
+                  </TextField>
                </children>
             </VBox>
             <VBox prefHeight="481.0" prefWidth="625.0" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="1">

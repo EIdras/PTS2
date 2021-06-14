@@ -59,7 +59,7 @@ public class MakerController extends ParentController implements Initializable {
 	MediaPlayer mediaPlayer;
 
 	@FXML Button btn_play;
-	@FXML TextField area_filePath, occultChar;
+	@FXML TextField area_filePath, occultChar, timeMin_field, timeSec_field;
 	@FXML Text txt_wordCount;
 	@FXML TextArea consigne_area, script_area, aide_area;
 	@FXML ImageView mp3_picture, soundButton, playPauseButton;
@@ -236,6 +236,7 @@ public class MakerController extends ParentController implements Initializable {
 		}
 	}
 
+	@Override
 	@FXML
 	public void darkMode() {
 		super.darkMode();
@@ -293,6 +294,21 @@ public class MakerController extends ParentController implements Initializable {
 	
 	@FXML
 	public void saveExercise() throws IOException {
+		/* consigne 	: Chaîne de caractères qui correspond à la consigne saisie
+		 * script 		: Chaîne de caractères qui correspond au script du média
+		 * aide 		: Chaîne de caractères qui correspond à l'aide saisie
+		 * media		: Chemin vers le fichier audio ou vidéo chargé par l'enseignant
+		 * occult		: Caractère d'occultation choisi
+		 * sauvegarde	: Chemin indiquant l'emplacement de sauvegarde du .exo
+		 * mode			: Mode choisi, "entrainement" ou "evaluation"
+		 * ------------------ Mode ENTRAINEMENT ------------------
+		 * affichageMots: Valeur booléenne de l'option d'affichage du nombre de mots découverts
+		 * incomplet	: Nombre de lettres autorisées avec l'option mot incomplet, vaut 0 si l'option n'est pas activée, sinon 2 ou 3
+		 * solution		: Valeur booléenne de l'option d'affichage de la solution
+		 *  ------------------ Mode  EVALUATION ------------------
+		 * tempsLimite  : Valeur en secondes du temps limite de l'exercice
+		 */
+		
 		Stage popUpStage = new Stage();
 		popUpStage.initModality(Modality.APPLICATION_MODAL);
 
@@ -302,20 +318,48 @@ public class MakerController extends ParentController implements Initializable {
 		String script = script_area.getText();
 		String aide = aide_area.getText();
 		String media = mediaPath;
-		String occult = occultChar.getText();
-		String incomplet = null;
-		if (enableIncompleteWord.isSelected()) {
-			incomplet = incompleteWordNbLetters.getValue();
+		String occultStr = occultChar.getText() + " ";
+		char occult = occultStr.charAt(0);
+		if (occult == ' ') {
+			occult = '#';
+		}
+		String sauvegarde = saveFilePath;
+		int mode = 0;
+		if (trainingModeRadioButton.isSelected()) {
+			mode = 1;
+		}
+		else if (evaluationModeRadioButton.isSelected()) {
+			mode = 2;
+		}
+		boolean affichageMots = false;
+		int incomplet = 0;
+		boolean solution = false;
+		int tempsLimite = 0;
+		
+		if (mode == 1) {
+			affichageMots = enableDisplayNbWordFound.isSelected();
+			if (enableIncompleteWord.isSelected()) {
+				if (incompleteWordNbLetters.getValue() == "2 caractères") {
+					incomplet = 2;
+				}
+				else {
+					incomplet = 3;
+				}
+			solution = enableAnswerDisplay.isSelected();
+			}
 		}
 		else {
-			incomplet = "false";
+			int tempsMinEnSec 	= Integer.parseInt(timeMin_field.getText()) * 60;
+			int tempsSec		= Integer.parseInt(timeSec_field.getText());
+			tempsLimite = tempsMinEnSec + tempsSec;
+			if (tempsLimite < 10) {
+				tempsLimite = 300;
+			}
 		}
-		String solution = String.valueOf(enableAnswerDisplay.isSelected());
-		String sauvegarde = saveFilePath;
 		
 		
 		SaveFileController saveController = Main.getSaveFileLoader().getController();
-		saveController.fillRecap(consigne, script, aide, media, occult, incomplet, solution, sauvegarde);
+		saveController.fillRecap(consigne, script, aide, media, occult, sauvegarde, mode, affichageMots, incomplet, solution, tempsLimite);
 		popUpStage.setTitle("Sauvegarde de votre exercice - Résumé");
 		popUpStage.setScene(popUpScene);
 		popUpStage.show();
