@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<BorderPane fx:id="bPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SaveFileController">
+   <bottom>
+      <GridPane>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <ImageView fx:id="iut_logo" fitHeight="75.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="BOTTOM_RIGHT" GridPane.columnIndex="1">
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </ImageView>
+            <Button defaultButton="true" mnemonicParsing="false" onAction="#SaveFile" text="FInaliser l'enregistrement du fichier" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+               <padding>
+                  <Insets bottom="5.0" left="30.0" right="30.0" top="5.0" />
+               </padding>
+            </Button>
+         </children>
+      </GridPane>
+   </bottom>
+   <center>
+      <GridPane BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Consigne :" GridPane.rowIndex="1" />
+            <Label text="Script :" GridPane.rowIndex="2" />
+            <Label text="Aide :" GridPane.rowIndex="3" />
+            <Label text="Chemin vers le média :" GridPane.rowIndex="4" />
+            <Label text="Caractère d'occultation :" GridPane.rowIndex="6" />
+            <Label text="Mot incomplet :" GridPane.rowIndex="7" />
+            <Label text="Affichage de la solution :" GridPane.rowIndex="9" />
+            <Label fx:id="consigne_lbl" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="script_lbl" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label fx:id="aide_lbl" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="media_lbl" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label fx:id="occult_lbl" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Label fx:id="incomplet_lbl" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Label fx:id="solution_lbl" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <Label text="Endroit où sauvegarder le fichier  :" GridPane.rowIndex="11" />
+            <Label fx:id="sauvegarde_lbl" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+            <Label text="Nom de l'exercice :" />
+            <Label fx:id="nomExo_lbl" text="Label" GridPane.columnIndex="1" />
+            <Label text="Mode de l'exercice :" GridPane.rowIndex="5" />
+            <Label fx:id="mode_lbl" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label text="Autoriser l'affichage du nombre de mots :" GridPane.rowIndex="8" />
+            <Label text="Limite de temps :" GridPane.rowIndex="10" />
+            <Label fx:id="affichageMots_lbl" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <Label fx:id="tempsLimite_lbl" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="30.0" right="30.0" top="5.0" />
+         </BorderPane.margin>
+      </GridPane>
+   </center>
+</BorderPane>
