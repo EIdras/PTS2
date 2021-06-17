@@ -1,10 +1,10 @@
 package etu;
 
+import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
@@ -15,6 +15,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -30,9 +32,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.util.Duration;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.*;
 
 public class EtuController extends ParentController implements Initializable {
-	String path, nomExo, consigne, script, mode, aide;
+	String pathToMedia, pathToExo, nomExo, consigne, script, mode, aide, occultationChar;
 	Hidden hidden;
 
 	private boolean atEndOfMedia = false;
@@ -74,21 +78,23 @@ public class EtuController extends ParentController implements Initializable {
 	public void setParamaters(String nomExo, String pathToExo, String consigne, String script, String Aide,
 			String pathToMedia, String occultationChar, String mode, int incompleteWords, int letterNumber,
 			int foundWords, int displayAnswer, int timeLimit) {
-		this.path = pathToMedia;
+		this.pathToExo = pathToExo;
+		this.pathToMedia = pathToMedia;
 		this.script = script;
 		this.nomExo = nomExo;
 		this.consigne = consigne;
 		this.mode = mode;
+		this.occultationChar = occultationChar;
 		this.hidden = new Hidden(script, occultationChar, mode, letterNumber);
 
 		script_area.setText(hidden.hideWord(script));
 		consigne_area.setText(consigne);
 		launchMedia();
-		if (path.endsWith(".mp3"))
+		if (pathToMedia.endsWith(".mp3"))
 			afficheImage();
 
 		Stage primaryStage = (Stage) mediaView.getScene().getWindow();
-		primaryStage.setTitle(nomExo);
+		primaryStage.setTitle("Reconstitution - Application Étudiante - " + nomExo);
 
 	}
 
@@ -101,8 +107,8 @@ public class EtuController extends ParentController implements Initializable {
 
 	@FXML
 	public void launchMedia() {
-		System.out.println(path);
-		media = new Media(path);
+		System.out.println(pathToMedia);
+		media = new Media(pathToMedia);
 		mediaPlayer = new MediaPlayer(media);
 		mediaView.setMediaPlayer(mediaPlayer);
 		mediaView.autosize();
@@ -281,7 +287,45 @@ public class EtuController extends ParentController implements Initializable {
 
 	@Override
 	public void setMenuBar() {
-		bPane.setTop(super.menuBar());
+		javafx.scene.control.MenuBar menuBar = super.menuBar();
+		MenuItem sauvegarder = new MenuItem("Sauvegarder");
+		MenuItem fermer = new MenuItem("Fermer");
+		menuBar.getMenus().get(0).getItems().addAll(sauvegarder, fermer);
+
+		fermer.setOnAction(Event -> {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Fermeture");
+			alert.setHeaderText(
+					"Confirmez vous vouloir fermer l'exerice ?\nValider l'action reviendrait à perdre ton contenu non enregistré");
+
+			// option != null.
+			Optional<ButtonType> option = alert.showAndWait();
+
+			if (option.get() == ButtonType.OK) {
+				mediaPlayer.stop();
+				Main.setScreen(0);
+			}
+		});
+
+		sauvegarder.setOnAction(Event -> {
+
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Sauvegarde");
+			try {
+				new FileManager().sauvegarderFichier(nomExo, pathToExo, consigne, script, hidden.getFoundString(), aide, pathToMedia, occultationChar, mode);
+			
+			alert.setHeaderText(
+					"Votre progression a été enregistré sous le nom de :\n\t" + pathToExo.replace(".exo", ".corr")
+							+ "\nATTENTION : ce fichier ne permets pas de récupérer votre progression !");
+			} catch (IOException e) {
+				alert.setHeaderText(
+						"Une erreur est survenue lors de la sauvegarde du fichier !");
+			}
+			alert.showAndWait();
+
+		});
+
+		bPane.setTop(menuBar);
 	}
 
 }

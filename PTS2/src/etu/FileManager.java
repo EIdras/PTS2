@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class FileManager {
+//	@SuppressWarnings({ "serial", "unused" })
 	public static HashMap<String, Object> ouvrirfichier(String path) {
 		// Initialisation variable
 
@@ -24,11 +25,11 @@ public class FileManager {
 			System.out.println("Something went wrong! Reason: " + e.getMessage());
 
 		}
-		
+
 		try {
 //			fichierTampon = File.createTempFile("tampon", ".tmp"); // Créé un fichier temporaire dans le
 			// AppData/Local/Temp/
-			videoFile = File.createTempFile("videoExo", ".mp"+extensionMedia);
+			videoFile = File.createTempFile("videoExo", ".mp" + extensionMedia);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -53,7 +54,9 @@ public class FileManager {
 			int inbuff;
 			byte bit;
 			int i = 0;
-			fin.read(buffer, 0, 1); //permets de skip le premier bit (celui qui détermine si c'est un mp3 ou un mp4.
+			fin.read(buffer, 0, 1); // permets de skip le premier bit (celui qui détermine si c'est un mp3 ou un
+									// mp4.
+			System.out.println("avant boucle while");
 			while (i != 12) {
 				inbuff = fin.read();
 				bit = (byte) inbuff;
@@ -267,55 +270,68 @@ public class FileManager {
 		return Integer.parseInt(new String(out, StandardCharsets.UTF_8));
 	}
 
-	public static void sauvegarderFichier() {
-		String texte = "prout putain de merde";
-		// Initialisation variable
+	@SuppressWarnings("resource")
+	public void sauvegarderFichier(String exoName, String path, String consigne, String script, String foundString,
+			String aide, String pathToMedia, String occultationChar, String mode) throws IOException {
 		final int BUFFERSIZE = 4 * 1024;
 		int bytesRead;
+		File tamponFile = File.createTempFile(exoName, ".corr");
 
-		// Choix fichier d'entrée et sortie
-		String sourceFilePath = "C:\\Users\\Maxime\\Downloads\\antoto.mp4";
-
-		String outputFilePath = "C:\\Users\\Maxime\\Desktop\\.exo";
+		String sourceFilePath = pathToMedia.replace("%20", " ").substring(6);
+		String outputFilePath = path + "\\" + exoName;
 		int tailleVideo = 0;
 
-		try ( // Ecriture de la vidéo dans un fichier tampon
-				FileInputStream fin = new FileInputStream(new File(sourceFilePath));
-				FileOutputStream fout = new FileOutputStream(new File("fichierTampon.bin"));) {
+		// Ecriture de la vidéo dans un fichier tampon
+		FileInputStream fin = new FileInputStream(new File(sourceFilePath));
+		FileOutputStream fout = new FileOutputStream(tamponFile);
 
-			byte[] buffer = new byte[BUFFERSIZE];
+		byte[] buffer = new byte[BUFFERSIZE];
 
-			while (fin.available() != 0) {
-				bytesRead = fin.read(buffer);
-				tailleVideo += bytesRead;
-				fout.write(buffer, 0, bytesRead);
-			}
-		} catch (Exception e) {
-			System.out.println("Something went wrong! Reason: " + e.getMessage());
-
+		while (fin.available() != 0) {
+			bytesRead = fin.read(buffer);
+			tailleVideo += bytesRead;
+			fout.write(buffer, 0, bytesRead);
 		}
 
-		try ( // Ecriture du fichier exo
-				FileInputStream fin = new FileInputStream(new File("fichierTampon.bin"));
-				FileOutputStream fout = new FileOutputStream(new File(outputFilePath));) {
+		// Ecriture du fichier exo
+		FileInputStream finF = new FileInputStream(tamponFile);
+		FileOutputStream foutF = new FileOutputStream(new File(outputFilePath + ".corr"));
 
-			byte[] buffer = new byte[BUFFERSIZE];
+		byte[] bufferF = new byte[BUFFERSIZE];
 
-			fout.write(String.valueOf(tailleVideo).getBytes()); // Ecriture taille video
-			fout.write(0x00);
-			int tailleTexte = texte.length();
-			fout.write(String.valueOf(tailleTexte).getBytes()); // Ecriture taille texte
-			fout.write(0x00);
+		foutF.write(String.valueOf(tailleVideo).getBytes()); // Ecriture taille video
+		foutF.write(0x00);
+		foutF.write(String.valueOf(exoName.length()).getBytes()); // Ecriture taille texte
+		foutF.write(0x00);
+		foutF.write(String.valueOf(consigne.length()).getBytes()); // Ecriture taille consigne
+		foutF.write(0x00);
+		foutF.write(String.valueOf(script.length()).getBytes()); // Ecriture taille script
+		foutF.write(0x00);
+		foutF.write(String.valueOf(foundString.length()).getBytes()); // Ecriture taille foundString
+		foutF.write(0x00);
+		foutF.write(String.valueOf(aide.toString().length()).getBytes()); // Ecriture taille aide
+		foutF.write(0x00);
+		foutF.write(String.valueOf(occultationChar.length()).getBytes()); // Ecriture taille char d'occultation
+		foutF.write(0x00);
+		foutF.write(String.valueOf(mode.length()).getBytes()); // Ecriture taille mode
+		foutF.write(0x00);
 
-			while (fin.available() != 0) { // Ecriture de la vidéo depuis le fichier tampon
-				bytesRead = fin.read(buffer);
-				fout.write(buffer, 0, bytesRead);
-			}
-			fout.write(texte.getBytes()); // Ecriture du texte
-		} catch (Exception e) {
-			System.out.println("Something went wrong! Reason: " + e.getMessage());
+		while (finF.available() != 0) { // Ecriture de la vidéo depuis le fichier tampon
+			bytesRead = finF.read(bufferF);
+			foutF.write(bufferF, 0, bytesRead);
 		}
+		foutF.write(exoName.getBytes()); // Ecriture du texte
+		foutF.write(consigne.getBytes()); // Ecriture du texte
+		foutF.write(script.getBytes()); // Ecriture du texte
+		foutF.write(foundString.getBytes()); // Ecriture du texte
+		foutF.write(aide.toString().getBytes()); // Ecriture du texte
+		foutF.write(occultationChar.getBytes()); // Ecriture du texte
+		foutF.write(mode.getBytes()); // Ecriture du texte
+
+//			System.out.println("Fichier écrit sans problème : ");
 
 	}
 
 }
+
+

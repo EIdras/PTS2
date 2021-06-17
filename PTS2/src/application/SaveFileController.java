@@ -2,8 +2,6 @@ package application;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -92,20 +90,19 @@ public class SaveFileController extends ParentController implements Initializabl
 	
 	@FXML 
 	public void SaveFile(){
-		List<String> aideFinal = Arrays.asList(aide.split(" +"));
 		Stage stage = (Stage) bPane.getScene().getWindow();
 		if(nomExo != null						&& 
 				sauvegarde != null				&& 
 				consigne != null				&& 
 				script != null					&&
-				aideFinal != null				&&
+				aide != null					&&
 				media != null					&&
 				String.valueOf(occult) != null	&&
 				mode != null					&&
 				incomplet != 0) {
 			
 			try {
-				new FileManager().sauvegarderFichier(nomExo, sauvegarde, consigne, script, aideFinal, media, String.valueOf(occult), mode, affichageMots ? 1 : 0, incomplet, 1 ,solution  ? 1 : 0, tempsLimite);
+				new FileManager().sauvegarderFichier(nomExo, sauvegarde, consigne, script, aide, media, String.valueOf(occult), mode, affichageMots ? 1 : 0, incomplet, 1 ,solution  ? 1 : 0, tempsLimite);
 				
 				createValidationAlert(sauvegarde,nomExo);
 				stage.close();

@@ -25,8 +25,6 @@ public abstract class ParentController implements Initializable {
 	MenuBar menuBar = new MenuBar();
 	Menu fichier = new Menu("Fichier");
 		MenuItem ouvrir = new MenuItem("Ouvrir");
-		MenuItem sauvegarder = new MenuItem("Sauvegarder");
-		MenuItem fermer = new MenuItem("Fermer");
 		
 	Menu parametres = new Menu("Paramètres");
 		CheckMenuItem pleinEcran = new CheckMenuItem("Plein écran");
@@ -70,7 +68,7 @@ public abstract class ParentController implements Initializable {
 	}
 	
 	public MenuBar menuBar() {
-			fichier.getItems().addAll(ouvrir, sauvegarder, fermer);
+			fichier.getItems().addAll(ouvrir);
 			parametres.getItems().addAll(pleinEcran,modeSombre);
 			aPropos.getItems().addAll(qui,aide,contacter);
 		menuBar.getMenus().addAll(fichier, parametres, aPropos);

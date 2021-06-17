@@ -35,6 +35,10 @@ public class Hidden {
 		return toReturn;
 	}
 
+	public String getFoundString() {
+		return foundString;
+	}
+	
 	private String reformatSentence(String original, String other) {
 
 		if (original.length() != other.length()) {

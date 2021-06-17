@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -20,10 +19,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
@@ -46,7 +43,7 @@ import javafx.util.Duration;
 
 public class MakerController extends ParentController implements Initializable {
 	String mediaPath, nomExo;
-	private static String saveFilePath;
+	private String saveFilePath;
 
 	private boolean atEndOfMedia = false;
 
