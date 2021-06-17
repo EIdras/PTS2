@@ -35,7 +35,6 @@ public abstract class ParentController implements Initializable {
 		
 	Menu aPropos = new Menu("A propos");
 		MenuItem qui = new MenuItem("Qui sommes-nous ?");
-		MenuItem aide = new MenuItem("(?) Aide");
 		MenuItem contacter = new MenuItem("Nous contacter");
 	
 	public void setIcons() {
@@ -73,7 +72,7 @@ public abstract class ParentController implements Initializable {
 	public MenuBar menuBar() {
 			fichier.getItems().addAll(nouveau, ouvrir, sauvegarder, fermer);
 			parametres.getItems().addAll(pleinEcran,modeSombre);
-			aPropos.getItems().addAll(qui,aide,contacter);
+			aPropos.getItems().addAll(qui,contacter);
 		menuBar.getMenus().addAll(fichier, parametres, aPropos);
 		
 		modeSombre.setOnAction(Event -> darkMode());

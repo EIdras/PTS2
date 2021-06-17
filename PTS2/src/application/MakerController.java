@@ -17,10 +17,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
@@ -30,7 +34,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -39,6 +47,7 @@ import javafx.scene.media.MediaPlayer.Status;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class MakerController extends ParentController implements Initializable {
@@ -52,16 +61,18 @@ public class MakerController extends ParentController implements Initializable {
 	Image pauseIcon = new Image("ressources/img/buttons/pauseButton.png");
 
 	@FXML BorderPane bPane;
-	
+	@FXML GridPane gPane_5;
 	@FXML MediaView mediaView;
 	@FXML StackPane media_pane;
 	Media media;
 	MediaPlayer mediaPlayer;
 
-	@FXML Button btn_play;
+	@FXML HBox hbox_4;
+	@FXML VBox vbox_1, vbox_2, vbox_3, vbox_4, vbox_5;
+	@FXML Button import_btn, btn_play;
 	@FXML TextField area_filePath, occultChar, timeMin_field, timeSec_field, exoName;
-	@FXML Text txt_wordCount;
-	@FXML Label timeLimit_lbl, min_lbl, s_lbl;
+	@FXML Text format_txt, txt_wordCount;
+	@FXML Label consigne_lbl, script_lbl, aide_lbl, media_lbl, options_lbl, timeLimit_lbl, min_lbl, s_lbl;
 	@FXML TextArea consigne_area, script_area, aide_area;
 	@FXML ImageView mp3_picture, soundButton, playPauseButton;
 	@FXML Slider time_slider, volume_slider;
@@ -414,9 +425,58 @@ public class MakerController extends ParentController implements Initializable {
 	}
 
 
+	public void tutorial() {
+		vbox_1.setVisible(false);
+		vbox_2.setVisible(false);
+		vbox_3.setVisible(false);
+		
+		vbox_4.setVisible(false);
+		media_pane.setVisible(false);
+		hbox_4.setVisible(false);
+		
+		vbox_5.setVisible(false);
+		gPane_5.setVisible(false);
+		
+		vbox_1.setVisible(true);
+		createAlert("Consigne - Nom", "Vous pouvez rentrer ici la consigne de l'exercice et son nom.","La consigne de l'exercice sera visible par l'élève \n Le nom de l'exercice également, il sera aussi utilisé pour nommer le fichier .exo.");
+		vbox_2.setVisible(true);
+		createAlert("Script", "Vous pouvez rentrer le texte en anglais associé à votre média.","Le texte ne sera pas directement visible par l'étudiant,\n il sera occulté et il devra le découvrir en proposant ses mots.");
+		vbox_3.setVisible(true);
+		createAlert("Aide", "Vous pouvez rentrer ici l'aide associée à l'exercice","L'aide peut être visionnée par l'étudiant si le mode choisi est \"Entraînement\"");
+		vbox_4.setVisible(true);
+		media_pane.setVisible(true);
+		hbox_4.setVisible(true);
+		createAlert("Média", "Vous pouvez importer ici un média (mp3, mp4).","Vous pouvez naviguer dans votre vidéo ou votre son avec les commandes multimédia usuelles, et régler le volume. \n L'étudiant pourra également, en chargeant votre exercice, lire le média associé. ");
+		vbox_5.setVisible(true);
+		gPane_5.setVisible(true);
+		createAlert("Options", "Vous pouvez choisir ici toutes les options de votre exercice.","Vous choisirez entre deux modes : \"Entraînement\" ou bien \"Evaluation\". Les paramètres modifiables diffèrent selon le mode choisi.");
+	}
+	
+	private void createAlert(String title, String header, String message) {
+		Alert alert = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.NEXT);
+		Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+		alert.initStyle(StageStyle.UNDECORATED);
+		alert.getDialogPane().getScene().getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		Pane bp = alert.getDialogPane();
+		bp.setOnMousePressed(pressEvent -> {
+			bp.setOnMouseDragged(dragEvent -> {
+				stage.setX(dragEvent.getScreenX() - pressEvent.getSceneX());
+				stage.setY(dragEvent.getScreenY() - pressEvent.getSceneY());
+			});
+		});
+		alert.setHeaderText(header);
+		alert.setTitle(title);
+		alert.showAndWait();
+	}
+	
+
 	@Override
 	public void setMenuBar() {
-		bPane.setTop(super.menuBar());
+		MenuBar menuBar = super.menuBar();
+		MenuItem aide = new MenuItem("(?) Tutoriel");
+		menuBar.getMenus().get(2).getItems().add(aide);
+		aide.setOnAction(Event -> tutorial());
+		
+		bPane.setTop(menuBar);
 	}
-
 }
