@@ -71,38 +71,27 @@ public class EtuController extends ParentController implements Initializable {
 		setMenuBar();
 	}
 
-	public void setParamaters(
-			String nomExo, 
-			String pathToExo, 
-			String consigne, 
-			String script, 
-			String Aide,
-			String pathToMedia, 
-			String occultationChar,
-			String mode, 
-			int incompleteWords, 
-			int letterNumber,
-			int foundWords, 
-			int displayAnswer, 
-			int timeLimit
-		) {
+	public void setParamaters(String nomExo, String pathToExo, String consigne, String script, String Aide,
+			String pathToMedia, String occultationChar, String mode, int incompleteWords, int letterNumber,
+			int foundWords, int displayAnswer, int timeLimit) {
 		this.path = pathToMedia;
 		this.script = script;
 		this.nomExo = nomExo;
 		this.consigne = consigne;
 		this.mode = mode;
 		this.hidden = new Hidden(script, occultationChar, mode, letterNumber);
-		
+
 		script_area.setText(hidden.hideWord(script));
 		consigne_area.setText(consigne);
 		launchMedia();
-		
+		if (path.endsWith(".mp3"))
+			afficheImage();
+
 		Stage primaryStage = (Stage) mediaView.getScene().getWindow();
 		primaryStage.setTitle(nomExo);
-		
 
 	}
-	
+
 	@FXML
 	public void tryToUnmaskWord() {
 		String toUnmaskString = input_field.getText();
