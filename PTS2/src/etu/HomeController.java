@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -16,10 +18,12 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class HomeController extends ParentController implements Initializable {
 
-	@FXML BorderPane bPane;
+	@FXML
+	BorderPane bPane;
 	@FXML
 	ImageView iut_logo;
 	File f;
@@ -56,8 +60,11 @@ public class HomeController extends ParentController implements Initializable {
 			openFile(f);
 		} else {
 			errorLabel.setVisible(true);
-			errorFileNameLabel.setText("Le fichier" + path.split("/")[path.split("/").length-1] + "n'est pas valide");
+			path = f.getAbsolutePath().replace("\\", "/");
+			errorFileNameLabel
+					.setText("Le fichier " + path.split("/")[path.split("/").length - 1] + " n'est pas valide");
 			errorFileNameLabel.setVisible(true);
+			path = null;
 		}
 	}
 
@@ -70,12 +77,13 @@ public class HomeController extends ParentController implements Initializable {
 		selectedFile = fileChooser.showOpenDialog(null);
 		if (selectedFile == null)
 			return;
-		try {
-			path = selectedFile.toURI().toURL().toExternalForm();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		path = selectedFile.getAbsolutePath().replace("\\", "/");
+//		try {
+//			path = selectedFile.toURI().toURL().toExternalForm();
+//			path = selectedFile.getAbsolutePath();
+//		} catch (MalformedURLException e) {
+//			e.printStackTrace();
+//		}
 		printFilePath();
 		openFile(new File(path));
 	}
@@ -87,6 +95,14 @@ public class HomeController extends ParentController implements Initializable {
 
 	private void openFile(File f2) {
 		// TODO
+		FXMLLoader loader = Main.getEtuLoader();
+		EtuController etuController = loader.getController();
+		HashMap<String, Object> map = new FileManager().ouvrirfichier(f2.getAbsolutePath());
+		
+		Main.setScreen(1);
+		etuController.setParamaters((String) map.get("exoName"), f2.getAbsolutePath(), (String) map.get("consigne"),
+				(String) map.get("script"), (String) map.get("aide"),  (String) map.get("mediaPath"), (String) map.get("occultChar"),
+				(String) map.get("mode"), (int) map.get("incompleteWords"), (int) map.get("letterNumber"), (int) map.get("foundWords"), (int) map.get("finalAnswer"), (int) map.get("timeLimit"));
 	}
 
 	@FXML

@@ -27,12 +27,13 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.util.Duration;
 
 public class EtuController extends ParentController implements Initializable {
-	String path, script;
-	ArrayList<String> aide;
+	String path, nomExo, consigne, script, mode, aide;
+	Hidden hidden;
 
 	private boolean atEndOfMedia = false;
 
@@ -40,20 +41,28 @@ public class EtuController extends ParentController implements Initializable {
 	Image playIcon = new Image("ressources/img/buttons/playButton.png");
 	Image pauseIcon = new Image("ressources/img/buttons/pauseButton.png");
 
-	@FXML BorderPane bPane;
-	@FXML MediaView mediaView;
-	@FXML StackPane media_pane;
+	@FXML
+	BorderPane bPane;
+	@FXML
+	MediaView mediaView;
+	@FXML
+	StackPane media_pane;
 	Media media;
 	MediaPlayer mediaPlayer;
 
-	@FXML Button btn_play;
-	@FXML Text txt_wordCount;
-	@FXML TextArea consigne_area, script_area;
-	@FXML TextField input_field;
-	@FXML ImageView mp3_picture, soundButton, playPauseButton;
-	@FXML Slider time_slider, volume_slider;
+	@FXML
+	Button btn_play;
+	@FXML
+	Text txt_wordCount;
+	@FXML
+	TextArea consigne_area, script_area;
+	@FXML
+	TextField input_field;
+	@FXML
+	ImageView mp3_picture, soundButton, playPauseButton;
+	@FXML
+	Slider time_slider, volume_slider;
 
-	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		super.initialize(arg0, arg1);
@@ -61,16 +70,49 @@ public class EtuController extends ParentController implements Initializable {
 		soundButton.setImage(soundIcon);
 		setMenuBar();
 	}
-	
-	public void setParamaters(String path, String script, ArrayList<String> aide) {
-		this.path = path;
+
+	public void setParamaters(
+			String nomExo, 
+			String pathToExo, 
+			String consigne, 
+			String script, 
+			String Aide,
+			String pathToMedia, 
+			String occultationChar,
+			String mode, 
+			int incompleteWords, 
+			int letterNumber,
+			int foundWords, 
+			int displayAnswer, 
+			int timeLimit
+		) {
+		this.path = pathToMedia;
 		this.script = script;
-		script_area.setText(script);
-		this.aide = aide;
+		this.nomExo = nomExo;
+		this.consigne = consigne;
+		this.mode = mode;
+		this.hidden = new Hidden(script, occultationChar, mode, letterNumber);
+		
+		script_area.setText(hidden.hideWord(script));
+		consigne_area.setText(consigne);
+		launchMedia();
+		
+		Stage primaryStage = (Stage) mediaView.getScene().getWindow();
+		primaryStage.setTitle(nomExo);
+		
+
+	}
+	
+	@FXML
+	public void tryToUnmaskWord() {
+		String toUnmaskString = input_field.getText();
+		input_field.clear();
+		script_area.setText(hidden.tryUnmaskWord(toUnmaskString));
 	}
 
 	@FXML
 	public void launchMedia() {
+		System.out.println(path);
 		media = new Media(path);
 		mediaPlayer = new MediaPlayer(media);
 		mediaView.setMediaPlayer(mediaPlayer);
@@ -86,14 +128,13 @@ public class EtuController extends ParentController implements Initializable {
 	}
 
 	public void timeSliderUpdate() {
-		
+
 		mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
 			@Override
 			public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
 				time_slider.setValue(newValue.toSeconds());
 			}
-		}
-				);
+		});
 
 		time_slider.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
@@ -184,7 +225,7 @@ public class EtuController extends ParentController implements Initializable {
 			playPauseButton.setImage(playIcon);
 			System.out.println(status);
 		}
-		
+
 		if (atEndOfMedia) {
 			System.out.println("Retour au début...");
 			mediaPlayer.seek(mediaPlayer.getStartTime());
@@ -199,15 +240,14 @@ public class EtuController extends ParentController implements Initializable {
 		// Mode sombre en chargeant un CSS
 		Main main = new Main();
 		Scene scene = Main.getScene();
-		//System.out.println(scene.getStylesheets());
-		if(scene.getStylesheets().stream().filter(value -> value.endsWith("darkmode.css")).collect(Collectors.toList()).size() > 0) {
+		// System.out.println(scene.getStylesheets());
+		if (scene.getStylesheets().stream().filter(value -> value.endsWith("darkmode.css")).collect(Collectors.toList())
+				.size() > 0) {
 			main.unloadCSS("darkmode.css");
-		}
-		else {
+		} else {
 			main.loadCSS("darkmode.css");
 		}
 	}
-
 
 	public static void addTextLimiter(final TextField tf, final int maxLength) {
 		tf.textProperty().addListener(new ChangeListener<String>() {
@@ -221,32 +261,32 @@ public class EtuController extends ParentController implements Initializable {
 			}
 		});
 	}
-	
+
 	public void mediaViewWidthListener() {
-		
+
 		media_pane.widthProperty().addListener(new InvalidationListener() {
 
 			@Override
 			public void invalidated(Observable arg0) {
-				System.out.print("LARGEUR "+media_pane.widthProperty().getValue());
+				System.out.print("LARGEUR " + media_pane.widthProperty().getValue());
 				mediaView.setFitWidth(media_pane.widthProperty().getValue());
-				System.out.println(" = "+mediaView.getFitWidth());
+				System.out.println(" = " + mediaView.getFitWidth());
 			}
-			
+
 		});
 
 	}
-	
+
 	public void mediaViewHeightListener() {
 		media_pane.heightProperty().addListener(new InvalidationListener() {
 
 			@Override
 			public void invalidated(Observable arg0) {
-				System.out.print("HAUTEUR "+media_pane.heightProperty().getValue());
+				System.out.print("HAUTEUR " + media_pane.heightProperty().getValue());
 				mediaView.setFitHeight(media_pane.heightProperty().getValue());
-				System.out.println(" = "+mediaView.getFitHeight());
+				System.out.println(" = " + mediaView.getFitHeight());
 			}
-			
+
 		});
 	}
 

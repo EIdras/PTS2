@@ -84,8 +84,7 @@ public class SaveFileController extends ParentController implements Initializabl
 	
 	@FXML 
 	public void SaveFile(){
-		List<String> aideFinal = Arrays.asList(aide.split(" +"));
-		new FileManager().sauvegarderFichier(nomExo, sauvegarde, consigne, script, aideFinal, media, String.valueOf(occult), mode, affichageMots ? 1 : 0, incomplet, 1 ,solution  ? 1 : 0, tempsLimite);
+		new FileManager().sauvegarderFichier(nomExo, sauvegarde, consigne, script, aide, media, String.valueOf(occult), mode, affichageMots ? 1 : 0, incomplet, 1 ,solution  ? 1 : 0, tempsLimite);
 	}
 
 
