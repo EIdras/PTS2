@@ -20,11 +20,14 @@ public class HomeController extends ParentController implements Initializable {
 	@FXML ImageView iut_logo;
 	@FXML BorderPane bPane;
 	@FXML ImageView tradLogo_view;
+	Image logo_trad = new Image("ressources/img/TRADUCTION_ICON.png");
 	File f;
+	
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		super.initialize(arg0, arg1);
+		tradLogo_view.setImage(logo_trad);
 		setMenuBar();
 	}
 
@@ -76,6 +79,7 @@ public class HomeController extends ParentController implements Initializable {
 	}
 	
 	
+	@Override
 	public void setMenuBar() {
 		bPane.setTop(super.menuBar());
 	}

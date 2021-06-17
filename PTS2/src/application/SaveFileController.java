@@ -32,17 +32,17 @@ public class SaveFileController extends ParentController implements Initializabl
 	}
 	
 	
-	/* consigne 	: Chaîne de caractères qui correspond à la consigne saisie
-	 * script 		: Chaîne de caractères qui correspond au script du média
-	 * aide 		: Chaîne de caractères qui correspond à l'aide saisie
-	 * media		: Chemin vers le fichier audio ou vidéo chargé par l'enseignant
-	 * occult		: Caractère d'occultation choisi
+	/* consigne 	: Chaï¿½ne de caractï¿½res qui correspond ï¿½ la consigne saisie
+	 * script 		: Chaï¿½ne de caractï¿½res qui correspond au script du mï¿½dia
+	 * aide 		: Chaï¿½ne de caractï¿½res qui correspond ï¿½ l'aide saisie
+	 * media		: Chemin vers le fichier audio ou vidï¿½o chargï¿½ par l'enseignant
+	 * occult		: Caractï¿½re d'occultation choisi
 	 * sauvegarde	: Chemin indiquant l'emplacement de sauvegarde du .exo
-	 * mode			: Mode choisi, 0 si pas de mode choisi, 1 pour entrainement et 2 pour évaluation
+	 * mode			: Mode choisi, 0 si pas de mode choisi, 1 pour entrainement et 2 pour ï¿½valuation
 	 * ------------------ Mode ENTRAINEMENT ------------------
-	 * affichageMots: Valeur booléenne de l'option d'affichage du nombre de mots découverts
-	 * incomplet	: Nombre de lettres autorisées avec l'option mot incomplet, vaut 0 si l'option n'est pas activée, sinon 2 ou 3
-	 * solution		: Valeur booléenne de l'option d'affichage de la solution
+	 * affichageMots: Valeur boolï¿½enne de l'option d'affichage du nombre de mots dï¿½couverts
+	 * incomplet	: Nombre de lettres autorisï¿½es avec l'option mot incomplet, vaut 0 si l'option n'est pas activï¿½e, sinon 2 ou 3
+	 * solution		: Valeur boolï¿½enne de l'option d'affichage de la solution
 	 *  ------------------ Mode  EVALUATION ------------------
 	 * tempsLimite  : Valeur en secondes du temps limite de l'exercice
 	 */
@@ -53,8 +53,8 @@ public class SaveFileController extends ParentController implements Initializabl
 		 * 
 		 * 
 		 *  - Autoriser mot incomplet (oui ou non)
-    		- Nombre de lettres autorisées (2 ou 3)
-  			- Autoriser affichage du nombre de mots découverts (oui ou non)
+    		- Nombre de lettres autorisï¿½es (2 ou 3)
+  			- Autoriser affichage du nombre de mots dï¿½couverts (oui ou non)
   			- Autoriser affichage de la solution (oui ou non)
   
 		 */
@@ -90,6 +90,7 @@ public class SaveFileController extends ParentController implements Initializabl
 	
 	@FXML 
 	public void SaveFile(){
+		
 		Stage stage = (Stage) bPane.getScene().getWindow();
 		if(nomExo != null						&& 
 				sauvegarde != null				&& 
@@ -101,20 +102,11 @@ public class SaveFileController extends ParentController implements Initializabl
 				mode != null					&&
 				incomplet != 0) {
 			
-			try {
-				new FileManager().sauvegarderFichier(nomExo, sauvegarde, consigne, script, aide, media, String.valueOf(occult), mode, affichageMots ? 1 : 0, incomplet, 1 ,solution  ? 1 : 0, tempsLimite);
-				
-				createValidationAlert(sauvegarde,nomExo);
-				stage.close();
-				Main.setScreen(0);
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.err.println("Erreur inconnue");
-				
-				stage.close();
-				
-				Main.setScreen(0);
-			}
+			new FileManager().sauvegarderFichier(nomExo, sauvegarde, consigne, script, aide, media, String.valueOf(occult), mode, affichageMots ? 1 : 0, incomplet, 1 ,solution  ? 1 : 0, tempsLimite);
+			
+			createValidationAlert(sauvegarde,nomExo);
+			stage.close();
+			Main.setScreen(0);
 		}
 		else {
 			System.err.println("Erreur dans la sauvegarde");
@@ -129,18 +121,18 @@ public class SaveFileController extends ParentController implements Initializabl
 				"Impossible de sauvegarder votre fichier, des champs sont manquants.\n"
 				+"Veuillez renseigner tous les champs.", ButtonType.OK);
 
-		alert.setHeaderText("La sauvegarde a échouée");
+		alert.setHeaderText("La sauvegarde a ï¿½chouï¿½e");
 		alert.setTitle("Erreur de sauvegarde");
 
 		alert.showAndWait();
 	}
 	public void createValidationAlert(String pathExo, String nomExo) {
 		Alert alert = new Alert(Alert.AlertType.INFORMATION,
-				"Vous pouvez retrouver le fichier de l'exercice sur votre ordinateur à cet emplacement : \n"
-				+ pathExo+"/"+nomExo+".exo", ButtonType.OK);
+				"Vous pouvez retrouver le fichier de l'exercice sur votre ordinateur ï¿½ cet emplacement : \n"
+				+ pathExo+"\\"+nomExo+".exo", ButtonType.OK);
 
-		alert.setHeaderText("Votre fichier a été sauvegardé avec succès");
-		alert.setTitle("Succès");
+		alert.setHeaderText("Votre fichier a ï¿½tï¿½ sauvegardï¿½ avec succï¿½s");
+		alert.setTitle("Succï¿½s");
 
 		alert.showAndWait();
 	}

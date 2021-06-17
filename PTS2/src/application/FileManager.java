@@ -13,10 +13,11 @@ public class FileManager {
 		File tamponFile = File.createTempFile(exoName, ".bin");
 
 		String sourceFilePath = pathToMedia.replace("%20", " ").substring(6);
+		System.out.println(sourceFilePath);
 		String outputFilePath = path + "\\" + exoName;
 		int tailleVideo = 0;
 
-		// Ecriture de la vidéo dans un fichier tampon
+		// Ecriture de la vidï¿½o dans un fichier tampon
 		FileInputStream fin = new FileInputStream(new File(sourceFilePath));
 		FileOutputStream fout = new FileOutputStream(tamponFile);
 
@@ -53,15 +54,15 @@ public class FileManager {
 																				// incomplet
 		foutF.write(0x00);
 		foutF.write(String.valueOf(numberOfLetterThatCanBeDiscover).getBytes()); // Ecriture taille nombre lettres
-																					// nécéssaire pour découvrir mot
+																					// nï¿½cï¿½ssaire pour dï¿½couvrir mot
 		foutF.write(0x00);
 		foutF.write(String.valueOf(displayFoundWords).getBytes()); // Ecriture taille displayFoundWord
 		foutF.write(0x00);
 		foutF.write(String.valueOf(displayFinalAnswer).getBytes()); // Ecriture taille displayAnswer
 		foutF.write(0x00);
 		foutF.write(String.valueOf(TimeLimitInMinute).getBytes()); // Ecriture taille TimeLimit
-		foutF.write(0x00);//ça c'est traitre
-		while (finF.available() != 0) { // Ecriture de la vidéo depuis le fichier tampon
+		foutF.write(0x00);//ï¿½a c'est traitre
+		while (finF.available() != 0) { // Ecriture de la vidï¿½o depuis le fichier tampon
 			bytesRead = finF.read(bufferF);
 			foutF.write(bufferF, 0, bytesRead);
 		}
@@ -77,7 +78,7 @@ public class FileManager {
 		foutF.write(displayFinalAnswer);// Ecriture du texte
 		foutF.write(TimeLimitInMinute); // Ecriture du texte
 
-//			System.out.println("Fichier écrit sans problème : ");
+//			System.out.println("Fichier ï¿½crit sans problï¿½me : ");
 
 	}
 
