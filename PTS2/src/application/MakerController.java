@@ -98,7 +98,7 @@ public class MakerController extends ParentController implements Initializable {
 
 		launchMedia();
 		printFilePath();
-		if (mediaPath.contains(".mp3"))
+		if (mediaPath.endsWith(".mp3"))
 			afficheImage();
 	}
 
