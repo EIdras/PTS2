@@ -1,10 +1,6 @@
-package etu;
+package application;
 
-import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.beans.InvalidationListener;
@@ -17,11 +13,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -30,16 +24,15 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.util.Duration;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.*;
 
-public class EtuController extends ParentController implements Initializable {
+public class correctionController extends ParentController implements Initializable {
 	String pathToMedia, pathToExo, nomExo, consigne, script, mode, aide, occultationChar;
-	Hidden hidden;
 
 	private boolean atEndOfMedia = false;
 
@@ -57,13 +50,16 @@ public class EtuController extends ParentController implements Initializable {
 	MediaPlayer mediaPlayer;
 
 	@FXML
+	Label wordFoundLabel, modeLabel;
+
+	@FXML
 	Button btn_play;
 	@FXML
-	Text txt_wordCount;
+	TextArea consigne_area, aide_area;
+
 	@FXML
-	TextArea consigne_area, script_area;
-	@FXML
-	TextField input_field;
+	TextFlow script_area;
+
 	@FXML
 	ImageView mp3_picture, soundButton, playPauseButton;
 	@FXML
@@ -77,9 +73,8 @@ public class EtuController extends ParentController implements Initializable {
 		setMenuBar();
 	}
 
-	public void setParamaters(String nomExo, String pathToExo, String consigne, String script, String aide,
-			String pathToMedia, String occultationChar, String mode, int incompleteWords, int letterNumber,
-			int foundWords, int displayAnswer, int timeLimit) {
+	public void setParamaters(String nomExo, String pathToExo, String consigne, String script, String foundScript,
+			String aide, String pathToMedia, String mode) {
 		this.pathToExo = pathToExo;
 		this.pathToMedia = pathToMedia;
 		this.script = script;
@@ -87,25 +82,48 @@ public class EtuController extends ParentController implements Initializable {
 		this.consigne = consigne;
 		this.mode = mode;
 		this.aide = aide;
-		this.occultationChar = occultationChar;
-		this.hidden = new Hidden(script, occultationChar, mode, letterNumber);
 
-		script_area.setText(hidden.hideWord(script));
 		consigne_area.setText(consigne);
+//		script_area.setText(foundScript);
+		String[] splittedFoundScript = foundScript.split("");
+		String[] splittedOriginalScriptStrings = script.split("");
+
+		for (int i = 0; i < splittedFoundScript.length; i++) {
+			Text t = new Text(splittedOriginalScriptStrings[i]);
+			if (splittedFoundScript[i].equals(splittedOriginalScriptStrings[i])) {
+				t.setFill(Color.BLACK);
+			} else {
+				t.setFill(Color.RED);
+			}
+			script_area.getChildren().add(t);
+		}
+		int correctWords = 0, allWords = 0;
+		splittedFoundScript = foundScript.split(" ");
+		splittedOriginalScriptStrings = script.split(" ");
+
+		for (int i = 0; i < splittedFoundScript.length; i++) {
+			allWords++;
+			if (splittedFoundScript[i].equals(splittedOriginalScriptStrings[i])) {
+				correctWords++;
+			}
+		}
+
+		modeLabel.setText(modeLabel.getText() + " " + mode);
+		wordFoundLabel.setText(wordFoundLabel.getText() + " " + correctWords + "/" + allWords);
+
+		/*
+		 * for (int i = 0; i < clear.length; i++) { Text t = new Text(clear[i]); if
+		 * (clear[i].equals(encrypted[i])) { t.setFill(Color.GREEN); }else {
+		 * t.setFill(Color.RED); } soluce.getChildren().add(t); }
+		 */
+
 		launchMedia();
 		if (pathToMedia.endsWith(".mp3"))
 			afficheImage();
 
 		Stage primaryStage = (Stage) mediaView.getScene().getWindow();
-		primaryStage.setTitle("Reconstitution - Application Étudiante - " + nomExo);
+		primaryStage.setTitle("Reconstitution - Application Enseignante - Correction " + nomExo);
 
-	}
-
-	@FXML
-	public void tryToUnmaskWord() {
-		String toUnmaskString = input_field.getText();
-		input_field.clear();
-		script_area.setText(hidden.tryUnmaskWord(toUnmaskString));
 	}
 
 	@FXML
@@ -247,19 +265,6 @@ public class EtuController extends ParentController implements Initializable {
 		}
 	}
 
-	public static void addTextLimiter(final TextField tf, final int maxLength) {
-		tf.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(final ObservableValue<? extends String> ov, final String oldValue,
-					final String newValue) {
-				if (tf.getText().length() > maxLength) {
-					String s = tf.getText().substring(0, maxLength);
-					tf.setText(s);
-				}
-			}
-		});
-	}
-
 	public void mediaViewWidthListener() {
 
 		media_pane.widthProperty().addListener(new InvalidationListener() {
@@ -290,47 +295,8 @@ public class EtuController extends ParentController implements Initializable {
 
 	@Override
 	public void setMenuBar() {
-		javafx.scene.control.MenuBar menuBar = super.menuBar();
-		MenuItem sauvegarder = new MenuItem("Sauvegarder");
-		MenuItem fermer = new MenuItem("Fermer");
-		menuBar.getMenus().get(0).getItems().addAll(sauvegarder, fermer);
+		bPane.setTop(super.menuBar());
 
-		fermer.setOnAction(Event -> {
-			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.setTitle("Fermeture");
-			alert.setHeaderText(
-					"Confirmez vous vouloir fermer l'exerice ?\nValider l'action reviendrait à perdre ton contenu non enregistré");
-
-			// option != null.
-			Optional<ButtonType> option = alert.showAndWait();
-
-			if (option.get() == ButtonType.OK) {
-				mediaPlayer.stop();
-				Main.setScreen(0);
-			}
-		});
-
-		sauvegarder.setOnAction(Event -> {
-
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Sauvegarde");
-			try {
-				new FileManager().sauvegarderFichier(nomExo, pathToExo.substring(0,pathToExo.lastIndexOf("\\"))+ "\\", consigne, script, hidden.getFoundString(), aide, pathToMedia, occultationChar, mode);
-			
-			alert.setHeaderText(
-					"Votre progression a été enregistré sous le nom de :\n\t" + pathToExo.replace(".exo", ".corr")
-							+ "\nATTENTION : ce fichier ne permets pas de récupérer votre progression !");
-			} catch (IOException e) {
-				e.printStackTrace();
-				alert.setAlertType(AlertType.ERROR);
-				alert.setHeaderText(
-						"Une erreur est survenue lors de la sauvegarde du fichier !");
-			}
-			alert.showAndWait();
-
-		});
-
-		bPane.setTop(menuBar);
 	}
 
 }

@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 	
-	private static FXMLLoader homeLoader, makerLoader, saveFileLoader;
+	private static FXMLLoader homeLoader, makerLoader, saveFileLoader, correctionLoader;
 	private static List<Pane> screens = new ArrayList<>(); // Liste des écrans
 	private static Scene scene;
 	
@@ -23,10 +23,12 @@ public class Main extends Application {
 			homeLoader = new FXMLLoader(getClass().getResource("home_page_refait.fxml"));					// Instancie des FXMLLoader
 			makerLoader = new FXMLLoader(getClass().getResource("exercice_maker_refait.fxml"));
 			saveFileLoader = new FXMLLoader(getClass().getResource("save_file_popup.fxml"));
+			correctionLoader = new FXMLLoader(getClass().getResource("correction.fxml"));
 			
 			screens.add((BorderPane) homeLoader.load());											// Les ajoute à la liste des écrans
 			screens.add((BorderPane) makerLoader.load());
 			screens.add((BorderPane) saveFileLoader.load());
+			screens.add((BorderPane) correctionLoader.load());
 			
 			scene = new Scene(screens.get(0));														// L'écran affiché sur la scene est le premier écran (d'index 0)
 			loadCSS("application.css");
@@ -63,6 +65,9 @@ public class Main extends Application {
 	}
 	public static FXMLLoader getSaveFileLoader() {
 		return saveFileLoader;
+	}
+	public static FXMLLoader getCorrectionLoader() {
+		return correctionLoader;
 	}
 	
 	public static Scene getScene() {

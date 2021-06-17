@@ -2,7 +2,6 @@ package etu;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -94,7 +93,6 @@ public class HomeController extends ParentController implements Initializable {
 	}
 
 	private void openFile(File f2) {
-		// TODO
 		FXMLLoader loader = Main.getEtuLoader();
 		EtuController etuController = loader.getController();
 		HashMap<String, Object> map = new FileManager().ouvrirfichier(f2.getAbsolutePath());
@@ -107,7 +105,7 @@ public class HomeController extends ParentController implements Initializable {
 
 	@FXML
 	public void changePage() {
-		Main.setScreen(1);
+		openFile(new File(path));
 	}
 
 	@Override

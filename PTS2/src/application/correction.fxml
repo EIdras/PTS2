@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.media.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.media.MediaView?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="bPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.correctionController">
+   <center>
+      <GridPane BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="83.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="534.0" minHeight="0.0" prefHeight="438.0" vgrow="SOMETIMES" />
+          <RowConstraints prefHeight="100.0" />
+        </rowConstraints>
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="Consigne">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="30.0" right="30.0" top="5.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextArea fx:id="consigne_area" editable="false" prefHeight="200.0" prefWidth="200.0" promptText="Consigne de l'exercice :">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="30.0" right="30.0" top="5.0" />
+                     </VBox.margin>
+                  </TextArea>
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="611.0" GridPane.rowIndex="1">
+               <children>
+                  <Label text="Script (transcription du média)">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="30.0" right="30.0" top="5.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="442.0" prefWidth="586.0">
+                     <children>
+                        <TextArea editable="false" prefHeight="450.0" prefWidth="565.0">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="30.0" right="30.0" top="5.0" />
+                           </VBox.margin>
+                        </TextArea>
+                        <TextFlow fx:id="script_area" prefHeight="200.0" prefWidth="200.0" />
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="30.0" right="30.0" top="5.0" />
+                     </padding>
+                  </StackPane>
+               </children>
+            </VBox>
+            <VBox prefHeight="481.0" prefWidth="625.0" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="1">
+               <children>
+                  <StackPane fx:id="media_pane" maxHeight="430.0" maxWidth="885.0" minHeight="255.0" minWidth="550.0" prefHeight="430.0" prefWidth="632.0" VBox.vgrow="SOMETIMES">
+                     <children>
+                        <MediaView fx:id="mediaView" fitHeight="306.0" fitWidth="550.0" mouseTransparent="true" nodeOrientation="INHERIT" StackPane.alignment="CENTER">
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor></MediaView>
+                        <Slider fx:id="volume_slider" orientation="VERTICAL" prefWidth="30.0" visible="false" StackPane.alignment="CENTER_RIGHT">
+                           <StackPane.margin>
+                              <Insets />
+                           </StackPane.margin>
+                           <padding>
+                              <Insets bottom="10.0" top="100.0" />
+                           </padding>
+                        </Slider>
+                        <ImageView fx:id="mp3_picture" fitHeight="432.0" fitWidth="564.0" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="30.0" right="30.0" />
+                     </VBox.margin>
+                  </StackPane>
+                  <HBox alignment="CENTER" prefWidth="200.0">
+                     <children>
+                        <ImageView fx:id="playPauseButton" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#playBtn" pickOnBounds="true" preserveRatio="true" smooth="false">
+                           <image>
+                              <Image url="@../ressources/img/buttons/pauseButton.png" />
+                           </image>
+                        </ImageView>
+                        <Slider fx:id="time_slider" HBox.hgrow="SOMETIMES">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </Slider>
+                        <ImageView fx:id="soundButton" fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#showVolumeSlider" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../ressources/img/buttons/soundButton.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="30.0" right="30.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+            <ImageView fx:id="iut_logo" fitHeight="75.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" GridPane.vgrow="NEVER" />
+            <GridPane GridPane.rowIndex="2">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="150.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label fx:id="modeLabel" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="77.0" text="Mode              :" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="100.0" right="100.0" top="5.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="wordFoundLabel" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="77.0" text="Mots Trouvés :" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="100.0" right="100.0" top="5.0" />
+                     </GridPane.margin>
+                  </Label>
+               </children>
+            </GridPane>
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+               <children>
+                  <Label text="Aide à disposition de l'étudiant">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="30.0" right="30.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextArea fx:id="aide_area" editable="false" prefHeight="200.0" prefWidth="200.0" promptText="Aide disponible">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="30.0" right="30.0" top="5.0" />
+                     </VBox.margin>
+                  </TextArea>
+               </children>
+            </VBox>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </BorderPane.margin>
+      </GridPane>
+   </center>
+</BorderPane>

@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -16,7 +23,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="bPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.HomeController">
+<BorderPane fx:id="bPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.HomeController">
    <center>
       <GridPane alignment="CENTER" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -35,7 +42,7 @@
                   <Image url="@../ressources/img/TRADUCTION_ICON.png" />
                </image>
             </ImageView>
-            <Label text="Ouvrir un exercice existant">
+            <Label text="Corriger un exercice existant">
                <font>
                   <Font name="System Bold" size="30.0" />
                </font>
@@ -70,8 +77,13 @@
             <ImageView fx:id="iut_logo" fitHeight="75.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
             <StackPane prefHeight="220.0" prefWidth="405.0" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1" GridPane.vgrow="SOMETIMES">
                <children>
-                  <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#bfecff" height="220.0" onDragOver="#onDragOver" onMouseDragOver="#Drop" stroke="#e6007e" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" width="400.0" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Glisser &amp; Déposer">
+                  <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#bfecff" height="220.0" onDragDropped="#Drop" onDragOver="#onDragOver" onMouseDragOver="#Drop" stroke="#e6007e" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" width="400.0" />
+                  <Label fx:id="errorLabel" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" lineSpacing="4.0" onDragDropped="#Drop" onDragOver="#onDragOver" prefHeight="159.0" prefWidth="383.0" text="Erreur : seuls les fichiers &quot;.corr&quot; sont acceptés" textAlignment="CENTER" textFill="RED" textOverrun="CLIP" visible="false" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Text onDragDropped="#Drop" onDragOver="#onDragOver" strokeType="OUTSIDE" strokeWidth="0.0" text="Glisser &amp; Déposer">
                      <font>
                         <Font name="System Italic" size="24.0" />
                      </font>

@@ -6,7 +6,8 @@ import java.util.*;
 
 public class FileManager {
 //	@SuppressWarnings({ "serial", "unused" })
-	public static HashMap<String, Object> ouvrirfichier(String path) {
+	@SuppressWarnings("serial")
+	public HashMap<String, Object> ouvrirfichier(String path) {
 		// Initialisation variable
 
 		final int BUFFERSIZE = 4 * 1024;
@@ -49,7 +50,7 @@ public class FileManager {
 					timeLimitLength = null;
 			ArrayList<Byte> tempByteList = new ArrayList<Byte>();
 			String exoName, consigne, script, aide, occultationChar, mode;
-			int incompleteWords, letterNumber, foundWords, finalAnswer, timeLimit, extensionVideo;
+			int incompleteWords, letterNumber, foundWords, finalAnswer, timeLimit;
 
 			int inbuff;
 			byte bit;
@@ -275,7 +276,7 @@ public class FileManager {
 			String aide, String pathToMedia, String occultationChar, String mode) throws IOException {
 		final int BUFFERSIZE = 4 * 1024;
 		int bytesRead;
-		File tamponFile = File.createTempFile(exoName, ".corr");
+		File tamponFile = File.createTempFile(exoName, ".bin");
 
 		String sourceFilePath = pathToMedia.replace("%20", " ").substring(6);
 		String outputFilePath = path + "\\" + exoName;
@@ -298,7 +299,8 @@ public class FileManager {
 		FileOutputStream foutF = new FileOutputStream(new File(outputFilePath + ".corr"));
 
 		byte[] bufferF = new byte[BUFFERSIZE];
-
+		
+		foutF.write(String.valueOf(pathToMedia.charAt(pathToMedia.length() - 1)).getBytes());
 		foutF.write(String.valueOf(tailleVideo).getBytes()); // Ecriture taille video
 		foutF.write(0x00);
 		foutF.write(String.valueOf(exoName.length()).getBytes()); // Ecriture taille texte
@@ -309,9 +311,7 @@ public class FileManager {
 		foutF.write(0x00);
 		foutF.write(String.valueOf(foundString.length()).getBytes()); // Ecriture taille foundString
 		foutF.write(0x00);
-		foutF.write(String.valueOf(aide.toString().length()).getBytes()); // Ecriture taille aide
-		foutF.write(0x00);
-		foutF.write(String.valueOf(occultationChar.length()).getBytes()); // Ecriture taille char d'occultation
+		foutF.write(String.valueOf(aide.length()).getBytes()); // Ecriture taille aide
 		foutF.write(0x00);
 		foutF.write(String.valueOf(mode.length()).getBytes()); // Ecriture taille mode
 		foutF.write(0x00);
@@ -325,7 +325,6 @@ public class FileManager {
 		foutF.write(script.getBytes()); // Ecriture du texte
 		foutF.write(foundString.getBytes()); // Ecriture du texte
 		foutF.write(aide.toString().getBytes()); // Ecriture du texte
-		foutF.write(occultationChar.getBytes()); // Ecriture du texte
 		foutF.write(mode.getBytes()); // Ecriture du texte
 
 //			System.out.println("Fichier écrit sans problème : ");
