@@ -31,7 +31,7 @@ public class FileManager {
 		// Ecriture du fichier exo
 		FileInputStream finF = new FileInputStream(tamponFile);
 		FileOutputStream foutF = new FileOutputStream(new File(outputFilePath + ".exo"));
-
+		
 		byte[] bufferF = new byte[BUFFERSIZE];
 		
 		foutF.write(String.valueOf(pathToMedia.charAt(pathToMedia.length() - 1)).getBytes());
@@ -60,7 +60,7 @@ public class FileManager {
 		foutF.write(String.valueOf(displayFinalAnswer).getBytes()); // Ecriture taille displayAnswer
 		foutF.write(0x00);
 		foutF.write(String.valueOf(TimeLimitInMinute).getBytes()); // Ecriture taille TimeLimit
-		foutF.write(0x00);
+		foutF.write(0x00);//ça c'est traitre
 		while (finF.available() != 0) { // Ecriture de la vidéo depuis le fichier tampon
 			bytesRead = finF.read(bufferF);
 			foutF.write(bufferF, 0, bytesRead);
