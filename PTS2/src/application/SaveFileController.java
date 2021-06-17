@@ -92,32 +92,23 @@ public class SaveFileController extends ParentController implements Initializabl
 	
 	@FXML 
 	public void SaveFile(){
-		List<String> aideFinal = Arrays.asList(aide.split(" +"));
+		
 		Stage stage = (Stage) bPane.getScene().getWindow();
 		if(nomExo != null						&& 
 				sauvegarde != null				&& 
 				consigne != null				&& 
 				script != null					&&
-				aideFinal != null				&&
+				aide != null					&&
 				media != null					&&
 				String.valueOf(occult) != null	&&
 				mode != null					&&
 				incomplet != 0) {
 			
-			try {
-				new FileManager().sauvegarderFichier(nomExo, sauvegarde, consigne, script, aideFinal, media, String.valueOf(occult), mode, affichageMots ? 1 : 0, incomplet, 1 ,solution  ? 1 : 0, tempsLimite);
-				
-				createValidationAlert(sauvegarde,nomExo);
-				stage.close();
-				Main.setScreen(0);
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.err.println("Erreur inconnue");
-				
-				stage.close();
-				
-				Main.setScreen(0);
-			}
+			new FileManager().sauvegarderFichier(nomExo, sauvegarde, consigne, script, aide, media, String.valueOf(occult), mode, affichageMots ? 1 : 0, incomplet, 1 ,solution  ? 1 : 0, tempsLimite);
+			
+			createValidationAlert(sauvegarde,nomExo);
+			stage.close();
+			Main.setScreen(0);
 		}
 		else {
 			System.err.println("Erreur dans la sauvegarde");
@@ -140,7 +131,7 @@ public class SaveFileController extends ParentController implements Initializabl
 	public void createValidationAlert(String pathExo, String nomExo) {
 		Alert alert = new Alert(Alert.AlertType.INFORMATION,
 				"Vous pouvez retrouver le fichier de l'exercice sur votre ordinateur à cet emplacement : \n"
-				+ pathExo+"/"+nomExo+".exo", ButtonType.OK);
+				+ pathExo+"\\"+nomExo+".exo", ButtonType.OK);
 
 		alert.setHeaderText("Votre fichier a été sauvegardé avec succès");
 		alert.setTitle("Succès");
