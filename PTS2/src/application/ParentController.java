@@ -78,6 +78,7 @@ public abstract class ParentController implements Initializable {
 		
 		modeSombre.setOnAction(Event -> darkMode());
 		pleinEcran.setOnAction(Event -> fullScreen());
+		fermer.setOnAction(Event -> closeExercise());
 		
 		contacter.setOnAction(Event -> {
 			try {
@@ -88,6 +89,10 @@ public abstract class ParentController implements Initializable {
 		});
 		
 		return menuBar;
+	}
+	
+	public void closeExercise() {
+		Main.setScreen(0);
 	}
 	
 	public abstract void setMenuBar();

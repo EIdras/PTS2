@@ -14,12 +14,15 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.MapChangeListener;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
@@ -61,6 +64,7 @@ public class MakerController extends ParentController implements Initializable {
 	@FXML Button btn_play;
 	@FXML TextField area_filePath, occultChar, timeMin_field, timeSec_field, exoName;
 	@FXML Text txt_wordCount;
+	@FXML Label timeLimit_lbl, min_lbl, s_lbl;
 	@FXML TextArea consigne_area, script_area, aide_area;
 	@FXML ImageView mp3_picture, soundButton, playPauseButton;
 	@FXML Slider time_slider, volume_slider;
@@ -160,7 +164,7 @@ public class MakerController extends ParentController implements Initializable {
 	public void volumeSliderUpdate() {
 		volume_slider.valueProperty().addListener((o -> {
 			mediaPlayer.setVolume(volume_slider.getValue() / 100.0); // Change le volume sonore selon la valeur du
-																		// slider vertical
+																	 // slider vertical
 		}));
 	}
 
@@ -256,11 +260,17 @@ public class MakerController extends ParentController implements Initializable {
 		});
 	}
 
+
 	@FXML
 	public void disableTrainingButtons() {
-		evaluationModeRadioButton.setDisable(true);
 		trainingModeRadioButton.setDisable(false);
 		trainingModeRadioButton.setSelected(false);
+		
+		timeMin_field.setDisable(false);
+		timeSec_field.setDisable(false);
+		timeLimit_lbl.setDisable(false);
+		min_lbl.setDisable(false);
+		s_lbl.setDisable(false);
 		
 		enableAnswerDisplay.setDisable(true);
 		incompleteWordNbLetters.setDisable(true);
@@ -271,9 +281,14 @@ public class MakerController extends ParentController implements Initializable {
 	@FXML
 	public void disabletEvaluationButtons() {
 		enableIncompleteWord();
-		trainingModeRadioButton.setDisable(true);
 		evaluationModeRadioButton.setDisable(false);
 		evaluationModeRadioButton.setSelected(false);
+		
+		timeMin_field.setDisable(true);
+		timeSec_field.setDisable(true);
+		timeLimit_lbl.setDisable(true);
+		min_lbl.setDisable(true);
+		s_lbl.setDisable(true);
 		
 		enableAnswerDisplay.setDisable(false);
 		enableDisplayNbWordFound.setDisable(false);
@@ -309,10 +324,14 @@ public class MakerController extends ParentController implements Initializable {
 		 * tempsLimite  : Valeur en secondes du temps limite de l'exercice
 		 */
 		
+
+		FXMLLoader load = new FXMLLoader(getClass().getResource("save_file_popup.fxml"));
+		Parent root = load.load();
+		
 		Stage popUpStage = new Stage();
 		popUpStage.initModality(Modality.APPLICATION_MODAL);
 
-		Scene popUpScene = new Scene(Main.getScreen(2));
+		Scene popUpScene = new Scene(root, 600, 400);
 		
 		String consigne = consigne_area.getText();
 		String script = script_area.getText();
@@ -359,7 +378,7 @@ public class MakerController extends ParentController implements Initializable {
 		}
 		
 		
-		SaveFileController saveController = Main.getSaveFileLoader().getController();
+		SaveFileController saveController = load.getController();
 		saveController.fillRecap(nomExo, consigne, script, aide, media, occult, sauvegarde, mode == 1 ? "entrainement" : "evaluation", affichageMots, incomplet, solution, tempsLimite);
 		popUpStage.setTitle("Sauvegarde de votre exercice - Résumé");
 		popUpStage.setScene(popUpScene);
