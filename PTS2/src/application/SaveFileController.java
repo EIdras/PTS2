@@ -89,7 +89,7 @@ public class SaveFileController extends ParentController implements Initializabl
 	}
 	
 	@FXML 
-	public void SaveFile(){
+	public void SaveFile() throws IOException{
 		
 		Stage stage = (Stage) bPane.getScene().getWindow();
 		if(nomExo != null						&& 

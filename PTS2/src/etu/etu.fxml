@@ -106,7 +106,7 @@
                <children>
                   <StackPane fx:id="media_pane" maxHeight="430.0" maxWidth="885.0" minHeight="255.0" minWidth="550.0" prefHeight="430.0" prefWidth="632.0" VBox.vgrow="SOMETIMES">
                      <children>
-                        <MediaView fx:id="mediaView" fitHeight="306.0" fitWidth="550.0" mouseTransparent="true" nodeOrientation="INHERIT" rotate="180.0" StackPane.alignment="CENTER">
+                        <MediaView fx:id="mediaView" fitHeight="306.0" fitWidth="550.0" mouseTransparent="true" nodeOrientation="INHERIT" StackPane.alignment="CENTER">
                            <cursor>
                               <Cursor fx:constant="DEFAULT" />
                            </cursor></MediaView>
